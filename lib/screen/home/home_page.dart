@@ -4,7 +4,6 @@ import 'package:lottie/lottie.dart';
 import 'package:ocr_barcode_flutter/screen/home/api/homeApi.dart';
 import 'package:ocr_barcode_flutter/screen/login/login_screen.dart';
 import 'package:ocr_barcode_flutter/screen/scannerProduct/scanner_screen.dart';
-import 'package:ocr_barcode_flutter/screen/searchHalal/search_screen.dart';
 
 class HomePage extends StatefulWidget {
   @override

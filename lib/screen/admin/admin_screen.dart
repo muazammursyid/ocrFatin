@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ocr_barcode_flutter/screen/addProduct/add_product.dart';
+import 'package:ocr_barcode_flutter/screen/updateProduct/update_product.dart';
 
 class AdminScreen extends StatefulWidget {
   @override
@@ -44,7 +46,14 @@ class _AdminScreenState extends State<AdminScreen> {
                         height: 50,
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddProduct(),
+                              ),
+                            );
+                          },
                           child: Text('ADD Product'),
                           style: ElevatedButton.styleFrom(
                             primary: Colors.green,
@@ -65,7 +74,14 @@ class _AdminScreenState extends State<AdminScreen> {
                         height: 50,
                         width: double.infinity,
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UpdateProduct(),
+                              ),
+                            );
+                          },
                           child: Text('UPDATE Product'),
                           style: OutlinedButton.styleFrom(
                             shape: BeveledRectangleBorder(

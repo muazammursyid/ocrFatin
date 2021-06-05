@@ -12,6 +12,34 @@ class GetAPI {
     };
   }
 
+  static addProductProvider(jsons, phpFile) async {
+    try {
+      String api =
+          globals.isProduction ? globals.urlProduction : globals.urlStagging;
+      String jsonBody = json.encode(jsons);
+      print("$phpFile");
+      Uri url = Uri.parse('$api$phpFile');
+      final ioc = new HttpClient();
+      ioc.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      final http = new IOClient(ioc);
+      final response = await http.post(
+        url,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        encoding: Encoding.getByName('utf-8'),
+        body: {
+          "val": [jsonBody].toString()
+        },
+      );
+
+      return [response.statusCode, response.body];
+    } catch (e) {
+      print(e);
+    }
+  }
+
   static providersGET(jsons, phpFile) async {
     try {
       String api =

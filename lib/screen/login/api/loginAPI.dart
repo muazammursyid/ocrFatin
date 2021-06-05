@@ -8,21 +8,20 @@ class LoginAPI {
       var result = await GetAPI.providersPOST(jsons, 'User/postuser');
       var response = result[1];
       var statusCode = result[0];
-      print(response);
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => AdminScreen(),
         ),
       );
-      if (statusCode == 200) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AdminScreen(),
-          ),
-        );
-      } else {}
+      // if (statusCode == 200) {
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => AdminScreen(),
+      //     ),
+      //   );
+      // } else {}
     } catch (e) {}
   }
 }
