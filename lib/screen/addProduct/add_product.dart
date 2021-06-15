@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ocr_barcode_flutter/screen/addProduct/api/addProductAPI.dart';
 
+import 'model/allBrandedmodel.dart';
+import 'model/listAllCompany.dart';
+
 class AddProduct extends StatefulWidget {
-  AddProduct({Key key}) : super(key: key);
+  final String username;
+  AddProduct({Key key, this.username}) : super(key: key);
 
   @override
   _AddProductState createState() => _AddProductState();
@@ -14,6 +19,24 @@ class _AddProductState extends State<AddProduct> {
   final brandText = TextEditingController();
   final referenceNumberText = TextEditingController();
   final companyNameText = TextEditingController();
+  List<Datum> listCompany = [];
+  var idxCompany;
+  List<Branded> listbranded = [];
+  var idxBranded;
+
+  @override
+  void initState() {
+    AddProductAPI.getAllCompanyName().then((value) {
+      AddProductAPI.getAlbrand().then((value2) {
+        setState(() {
+          listCompany = value;
+          listbranded = value2;
+        });
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,8 +45,8 @@ class _AddProductState extends State<AddProduct> {
           child: Stack(
             children: [
               Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
                     height: 80,
@@ -71,13 +94,107 @@ class _AddProductState extends State<AddProduct> {
                   makeInput(
                       label: "Product Name", controllerText: productNameText),
                   makeInput(
-                      label: "Expired Date", controllerText: expiredDateText),
-                  makeInput(label: "Brand", controllerText: brandText),
+                      label: "Halal Status Expiry Date",
+                      controllerText: expiredDateText,
+                      onTap: () {
+                        showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2015, 8),
+                                lastDate: DateTime(2101))
+                            .then((pickedDate) {
+                          expiredDateText.text =
+                              DateFormat('dd/MM/yyy').format(pickedDate);
+                        });
+                      }),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20, top: 2),
+                    child: Text(
+                      'Brand',
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black87),
+                    ),
+                  ),
+                  Container(
+                      margin:
+                          const EdgeInsets.only(left: 20, right: 20, top: 2),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        border: new Border.all(
+                          color: Colors.grey[400],
+                          // width: 0.6,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                        color: Colors.white,
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 14.0, right: 14),
+                          child: DropdownButton(
+                            isExpanded: true,
+                            dropdownColor: Colors.white,
+                            value: idxBranded,
+                            items: listbranded.map((e) {
+                              return DropdownMenuItem(
+                                  child: Text(e.name), value: e.idx);
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                idxBranded = value;
+                              });
+                            },
+                          ),
+                        ),
+                      )),
+                  SizedBox(
+                    height: 30,
+                  ),
                   makeInput(
                       label: "Reference Number",
                       controllerText: referenceNumberText),
-                  makeInput(
-                      label: "Company Name", controllerText: companyNameText),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20, top: 2),
+                    child: Text(
+                      'Company Name',
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black87),
+                    ),
+                  ),
+                  Container(
+                      margin:
+                          const EdgeInsets.only(left: 20, right: 20, top: 2),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        border: new Border.all(
+                          color: Colors.grey[400],
+                          // width: 0.6,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                        color: Colors.white,
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 14.0, right: 14),
+                          child: DropdownButton(
+                            isExpanded: true,
+                            dropdownColor: Colors.white,
+                            value: idxCompany,
+                            items: listCompany.map((e) {
+                              return DropdownMenuItem(
+                                  child: Text(e.name), value: e.idx);
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                idxCompany = value;
+                              });
+                            },
+                          ),
+                        ),
+                      )),
                   SizedBox(
                     height: 30,
                   ),
@@ -88,26 +205,26 @@ class _AddProductState extends State<AddProduct> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
+                          DateTime now = DateTime.now();
+                          String createDateNow =
+                              DateFormat('dd/MM/yyyy').format(now);
                           var jsons = {
-                            // "name": productNameText.text,
-                            "name": 'testing',
-                            // "no_ref": referenceNumberText.text,
-                            "no_ref": 'JAKIM TESTINGG',
-                            "company_id": "4",
-                            "brand_id": "6",
-                            // "expired_date": expiredDateText.text,
-                            "expired_date": '31/5/2022 12:00:00 AM',
-                            "create_by": "fatin@gmail",
-                            "create_date": "1/6/2021 11:49:23 PM",
-                            "update_by": "fatin@gmail.com",
-                            "update_date": "1/6/2021 11:49:23 PM",
+                            "name": productNameText.text,
+                            "no_ref": referenceNumberText.text,
+                            "company_id": idxCompany,
+                            "brand_id": idxBranded,
+                            "expired_date": expiredDateText.text,
+                            "create_by": widget.username,
+                            "create_date": createDateNow,
+                            "update_by": widget.username,
+                            "update_date": createDateNow,
                             "imagebinary": "",
                             "filename": "",
                             "filetype": "",
                           };
                           AddProductAPI.getApiAddProduct(jsons, context);
                         },
-                        child: Text('ADD Product'),
+                        child: Text('Add Product'),
                         style: ElevatedButton.styleFrom(
                           primary: Colors.green,
                           shape: RoundedRectangleBorder(
@@ -149,6 +266,7 @@ class _AddProductState extends State<AddProduct> {
   Widget makeInput({
     label,
     TextEditingController controllerText,
+    Function onTap,
   }) {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 2),
@@ -165,29 +283,9 @@ class _AddProductState extends State<AddProduct> {
           SizedBox(
             height: 5,
           ),
-          // Container(
-          //   padding: const EdgeInsets.only(left: 8, right: 8),
-          //   decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-          //   width: double.infinity,
-          //   child: Column(
-          //     mainAxisAlignment: MainAxisAlignment.start,
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       SizedBox(
-          //         height: 15,
-          //       ),
-          //       Text(
-          //         displayText,
-          //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          //       ),
-          //       SizedBox(
-          //         height: 15,
-          //       ),
-          //     ],
-          //   ),
-          // ),
           TextField(
             controller: controllerText,
+            onTap: onTap,
             decoration: InputDecoration(
               contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
               enabledBorder: OutlineInputBorder(

@@ -1,17 +1,16 @@
 // To parse this JSON data, do
 //
-//     final goodConductData = goodConductDataFromJson(jsonString);
+//     final allBranded = allBrandedFromJson(jsonString);
 
 import 'dart:convert';
 
-GoodConductData goodConductDataFromJson(String str) =>
-    GoodConductData.fromJson(json.decode(str));
+AllBranded allBrandedFromJson(String str) =>
+    AllBranded.fromJson(json.decode(str));
 
-String goodConductDataToJson(GoodConductData data) =>
-    json.encode(data.toJson());
+String allBrandedToJson(AllBranded data) => json.encode(data.toJson());
 
-class GoodConductData {
-  GoodConductData({
+class AllBranded {
+  AllBranded({
     this.result,
     this.message,
     this.date,
@@ -21,17 +20,15 @@ class GoodConductData {
   bool result;
   String message;
   DateTime date;
-  List<ProductData> data;
+  List<Branded> data;
 
-  factory GoodConductData.fromJson(Map<String, dynamic> json) =>
-      GoodConductData(
+  factory AllBranded.fromJson(Map<String, dynamic> json) => AllBranded(
         result: json["Result"] == null ? null : json["Result"],
         message: json["Message"] == null ? null : json["Message"],
         date: json["Date"] == null ? null : DateTime.parse(json["Date"]),
         data: json["Data"] == null
             ? null
-            : List<ProductData>.from(
-                json["Data"].map((x) => ProductData.fromJson(x))),
+            : List<Branded>.from(json["Data"].map((x) => Branded.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -44,74 +41,46 @@ class GoodConductData {
       };
 }
 
-class ProductData {
-  ProductData({
+class Branded {
+  Branded({
     this.idx,
     this.name,
-    this.noRef,
     this.companyId,
     this.companyName,
-    this.brandId,
-    this.brandName,
-    this.expiredDate,
     this.createBy,
     this.createDate,
     this.updateBy,
     this.updateDate,
-    this.imagebinary,
-    this.filename,
-    this.filetype,
   });
 
   String idx;
   String name;
-  String noRef;
   String companyId;
-  String companyName;
-  String brandId;
-  String brandName;
-  String expiredDate;
+  dynamic companyName;
   String createBy;
   String createDate;
   String updateBy;
   String updateDate;
-  String imagebinary;
-  String filename;
-  String filetype;
 
-  factory ProductData.fromJson(Map<String, dynamic> json) => ProductData(
+  factory Branded.fromJson(Map<String, dynamic> json) => Branded(
         idx: json["idx"] == null ? null : json["idx"],
         name: json["name"] == null ? null : json["name"],
-        noRef: json["no_ref"] == null ? null : json["no_ref"],
         companyId: json["company_id"] == null ? null : json["company_id"],
-        companyName: json["company_name"] == null ? null : json["company_name"],
-        brandId: json["brand_id"] == null ? null : json["brand_id"],
-        brandName: json["brand_name"] == null ? null : json["brand_name"],
-        expiredDate: json["expired_date"] == null ? null : json["expired_date"],
+        companyName: json["company_name"],
         createBy: json["create_by"] == null ? null : json["create_by"],
         createDate: json["create_date"] == null ? null : json["create_date"],
         updateBy: json["update_by"] == null ? null : json["update_by"],
         updateDate: json["update_date"] == null ? null : json["update_date"],
-        imagebinary: json["imagebinary"] == null ? null : json["imagebinary"],
-        filename: json["filename"] == null ? null : json["filename"],
-        filetype: json["filetype"] == null ? null : json["filetype"],
       );
 
   Map<String, dynamic> toJson() => {
         "idx": idx == null ? null : idx,
         "name": name == null ? null : name,
-        "no_ref": noRef == null ? null : noRef,
         "company_id": companyId == null ? null : companyId,
-        "company_name": companyName == null ? null : companyName,
-        "brand_id": brandId == null ? null : brandId,
-        "brand_name": brandName == null ? null : brandName,
-        "expired_date": expiredDate == null ? null : expiredDate,
+        "company_name": companyName,
         "create_by": createBy == null ? null : createBy,
         "create_date": createDate == null ? null : createDate,
         "update_by": updateBy == null ? null : updateBy,
         "update_date": updateDate == null ? null : updateDate,
-        "imagebinary": imagebinary == null ? null : imagebinary,
-        "filename": filename == null ? null : filename,
-        "filetype": filetype == null ? null : filetype,
       };
 }

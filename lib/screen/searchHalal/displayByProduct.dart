@@ -3,7 +3,7 @@ import 'package:ocr_barcode_flutter/screen/home/models/searchByProduct.dart';
 import 'package:ocr_barcode_flutter/screen/searchHalal/search_screen.dart';
 
 class DisplayByProduct extends StatefulWidget {
-  List<Datum> listProduct = [];
+  List<ProductData> listProduct = [];
   DisplayByProduct({this.listProduct});
 
   @override
@@ -11,7 +11,7 @@ class DisplayByProduct extends StatefulWidget {
 }
 
 class _DisplayByProductState extends State<DisplayByProduct> {
-  List<Datum> listProduct = [];
+  List<ProductData> listProduct = [];
 
   @override
   void initState() {
@@ -51,123 +51,139 @@ class _DisplayByProductState extends State<DisplayByProduct> {
                     ),
                     Column(
                       children: listProduct.map((item) {
-                        return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SearchScreen(
-                                  productName: item.name,
-                                  expiredDate: item.expiredDate,
-                                  brandName: item.brandName,
-                                  refNumber: item.noRef,
-                                  companyName: item.companyName,
-                                  imageProduct: item.filename,
+                        return Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SearchScreen(
+                                      productName: item.name,
+                                      expiredDate: item.expiredDate,
+                                      brandName: item.brandName,
+                                      refNumber: item.noRef,
+                                      companyName: item.companyName,
+                                      imageProduct: item.filename,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                height: 180,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10),
+                                      bottomRight: Radius.circular(10)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 3,
+                                      blurRadius: 7,
+                                      offset: Offset(
+                                          0, 3), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Container(
+                                      width: 120.0,
+                                      height: 120,
+                                      decoration: new BoxDecoration(
+                                        image: new DecorationImage(
+                                          image: AssetImage(
+                                              'assets/images/susu.jpg'),
+                                          fit: BoxFit.cover,
+                                        ),
+                                        borderRadius: new BorderRadius.all(
+                                            new Radius.circular(15.0)),
+                                        border: new Border.all(
+                                          color: Colors.black,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 30,
+                                          ),
+                                          Text(
+                                            'Name : ' + item.name,
+                                            softWrap: true,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            height: 4,
+                                          ),
+                                          Text(
+                                            'No Ref : ' + item.noRef,
+                                            softWrap: true,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w300),
+                                          ),
+                                          SizedBox(
+                                            height: 4,
+                                          ),
+                                          Text(
+                                            'Halal Status Expiry Date : ' +
+                                                item.expiredDate,
+                                            softWrap: true,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w300),
+                                          ),
+                                          SizedBox(
+                                            height: 4,
+                                          ),
+                                          Expanded(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Expanded(
+                                                  child: SizedBox(
+                                                      width: double.infinity),
+                                                ),
+                                                Icon(Icons.arrow_forward),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
-                            );
-                          },
-                          child: Container(
-                            height: 180,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10),
-                                  bottomRight: Radius.circular(10)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 3,
-                                  blurRadius: 7,
-                                  offset: Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Container(
-                                  width: 120.0,
-                                  height: 120,
-                                  decoration: new BoxDecoration(
-                                    image: new DecorationImage(
-                                      image: item.filename == ""
-                                          ? AssetImage('assets/images/susu.jpg')
-                                          : NetworkImage(item.filename),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    borderRadius: new BorderRadius.all(
-                                        new Radius.circular(15.0)),
-                                    border: new Border.all(
-                                      color: Colors.black,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Text(
-                                        'Name : ' + item.name,
-                                        softWrap: true,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      SizedBox(
-                                        height: 4,
-                                      ),
-                                      Text(
-                                        'No Ref : ' + item.noRef,
-                                        softWrap: true,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w300),
-                                      ),
-                                      SizedBox(
-                                        height: 4,
-                                      ),
-                                      Text(
-                                        'Expired Date : ' + item.expiredDate,
-                                        softWrap: true,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w300),
-                                      ),
-                                      SizedBox(
-                                        height: 4,
-                                      ),
-                                      Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Expanded(
-                                              child: SizedBox(
-                                                  width: double.infinity),
-                                            ),
-                                            Icon(Icons.arrow_forward),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
+                            SizedBox(
+                              height: 20,
                             ),
-                          ),
+                          ],
                         );
                       }).toList(),
                     )

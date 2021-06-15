@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ocr_barcode_flutter/screen/addProduct/add_product.dart';
-import 'package:ocr_barcode_flutter/screen/updateProduct/update_product.dart';
+import 'package:ocr_barcode_flutter/screen/complaint/all_complaint.dart';
+import 'package:ocr_barcode_flutter/screen/updateProduct/all_product.dart';
 
 class AdminScreen extends StatefulWidget {
+  final String username;
+  AdminScreen({this.username});
   @override
   _AdminScreenState createState() => _AdminScreenState();
 }
@@ -50,11 +53,13 @@ class _AdminScreenState extends State<AdminScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AddProduct(),
+                                builder: (context) => AddProduct(
+                                  username: widget.username,
+                                ),
                               ),
                             );
                           },
-                          child: Text('ADD Product'),
+                          child: Text('Add Product'),
                           style: ElevatedButton.styleFrom(
                             primary: Colors.green,
                             shape: RoundedRectangleBorder(
@@ -78,11 +83,13 @@ class _AdminScreenState extends State<AdminScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => UpdateProduct(),
+                                builder: (context) => AllProduct(
+                                  username: widget.username,
+                                ),
                               ),
                             );
                           },
-                          child: Text('UPDATE Product'),
+                          child: Text('Update Product'),
                           style: OutlinedButton.styleFrom(
                             shape: BeveledRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
@@ -92,7 +99,32 @@ class _AdminScreenState extends State<AdminScreen> {
                       ),
                     ),
                     SizedBox(
-                      width: 10,
+                      height: 30,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30, right: 40),
+                      child: SizedBox(
+                        height: 50,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AllComplaint(),
+                              ),
+                            );
+                          },
+                          child: Text('View Complaint'),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(5), // <-- Radius
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),

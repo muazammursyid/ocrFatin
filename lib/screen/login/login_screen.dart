@@ -63,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.all(15),
                       child: TextField(
                         controller: passwordController,
+                        obscureText: true,
                         decoration: InputDecoration(
                           hintText: 'Password',
                           suffixIcon: Icon(Icons.lock),
@@ -79,22 +80,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // SizedBox(
-                        //   height: 50,
-                        //   width: 150,
-                        //   child: OutlinedButton(
-                        //     onPressed: () {},
-                        //     child: Text('SIGN UP'),
-                        //     style: OutlinedButton.styleFrom(
-                        //       shape: BeveledRectangleBorder(
-                        //         borderRadius: BorderRadius.circular(5),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                        // SizedBox(
-                        //   width: 10,
-                        // ),
                         SizedBox(
                           height: 50,
                           width: 150,
@@ -104,6 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 "user": userNameController.text,
                                 "pass": passwordController.text
                               };
+                              print(jsons);
                               LoginAPI.loginApi(jsons, context);
                             },
                             child: Text('LOGIN'),

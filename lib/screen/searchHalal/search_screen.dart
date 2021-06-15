@@ -48,9 +48,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         decoration: new BoxDecoration(
                           color: const Color(0xff7c94b6),
                           image: new DecorationImage(
-                            image: widget.imageProduct == ""
-                                ? AssetImage('assets/images/susu.jpg')
-                                : NetworkImage(widget.imageProduct),
+                            image: AssetImage('assets/images/susu.jpg'),
                             fit: BoxFit.cover,
                           ),
                           borderRadius:
@@ -68,7 +66,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     makeInput(
                         label: "Product Name", displayText: widget.productName),
                     makeInput(
-                        label: "Expired Date", displayText: widget.expiredDate),
+                        label: "Halal Status Expiry Date",
+                        displayText: widget.expiredDate),
                     makeInput(label: "Brand", displayText: widget.brandName),
                     makeInput(
                         label: "Reference Number",

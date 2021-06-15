@@ -20,7 +20,7 @@ class AllProduct {
   bool result;
   String message;
   DateTime date;
-  List<Datum> data;
+  List<DatumAll> data;
 
   factory AllProduct.fromJson(Map<String, dynamic> json) => AllProduct(
         result: json["Result"] == null ? null : json["Result"],
@@ -28,7 +28,8 @@ class AllProduct {
         date: json["Date"] == null ? null : DateTime.parse(json["Date"]),
         data: json["Data"] == null
             ? null
-            : List<Datum>.from(json["Data"].map((x) => Datum.fromJson(x))),
+            : List<DatumAll>.from(
+                json["Data"].map((x) => DatumAll.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -41,8 +42,8 @@ class AllProduct {
       };
 }
 
-class Datum {
-  Datum({
+class DatumAll {
+  DatumAll({
     this.idx,
     this.name,
     this.noRef,
@@ -76,7 +77,7 @@ class Datum {
   String filename;
   String filetype;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory DatumAll.fromJson(Map<String, dynamic> json) => DatumAll(
         idx: json["idx"] == null ? null : json["idx"],
         name: json["name"] == null ? null : json["name"],
         noRef: json["no_ref"] == null ? null : json["no_ref"],

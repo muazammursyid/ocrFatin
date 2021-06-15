@@ -17,6 +17,7 @@ class GetAPI {
       String api =
           globals.isProduction ? globals.urlProduction : globals.urlStagging;
       String jsonBody = json.encode(jsons);
+      print(jsonBody);
       print("$phpFile");
       Uri url = Uri.parse('$api$phpFile');
       final ioc = new HttpClient();
@@ -79,14 +80,22 @@ class GetAPI {
     try {
       String api =
           globals.isProduction ? globals.urlProduction : globals.urlStagging;
-      String jsonBody = json.encode(jsons);
+      print("$phpFile");
       Uri url = Uri.parse('$api$phpFile');
+      String jsonBody = json.encode(jsons);
+      print(jsonBody);
       final ioc = new HttpClient();
       ioc.badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
       final http = new IOClient(ioc);
-      Response response =
-          await http.post(url, headers: globals.headers, body: jsonBody);
+      print('here');
+      Response response = await http.post(
+        url,
+        body: jsonBody,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
       return [response.statusCode, response.body];
     } catch (e) {
       print(e.toString());

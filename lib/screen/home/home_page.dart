@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ocr_barcode_flutter/screen/home/api/homeApi.dart';
 import 'package:ocr_barcode_flutter/screen/login/login_screen.dart';
@@ -12,7 +13,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController searchText = TextEditingController();
+  final searchText = TextEditingController();
+  final emailText = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +71,13 @@ class _HomePageState extends State<HomePage> {
                   child: buildContainer('assets/images/searchlottie.json',
                       'SEARCH HALAL\nPRODUCT', 10),
                 ),
+                InkWell(
+                  onTap: () {
+                    openDialogComplaint();
+                  },
+                  child: buildContainer('assets/images/comment.json',
+                      'My Complaint'.toUpperCase(), 10),
+                ),
                 Text(
                   'Click On The Link Bellow For',
                   style: TextStyle(color: Colors.black),
@@ -99,7 +108,10 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                )
+                ),
+                SizedBox(
+                  height: 40,
+                ),
               ],
             ),
           ),
@@ -147,6 +159,100 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  openDialogComplaint() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0))),
+            contentPadding: EdgeInsets.only(top: 10.0),
+            content: Container(
+              width: 300.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    "Search By Email",
+                    style: TextStyle(
+                        fontSize: 24.0,
+                        color: Colors.green,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Divider(
+                    color: Colors.grey,
+                    height: 4.0,
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+                    child: Container(
+                      height: 50.0,
+                      width: double.infinity,
+                      child: TextField(
+                        controller: emailText,
+                        textInputAction: TextInputAction.search,
+                        decoration: InputDecoration(
+                          hintText: "contoh@gmail.com",
+                          border: InputBorder.none,
+                          contentPadding:
+                              EdgeInsets.only(left: 15.0, top: 15.0),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.email),
+                            iconSize: 30.0,
+                            onPressed: () {},
+                          ),
+                        ),
+                        onSubmitted: (term) {},
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      HomeApi.getMyComplaint(emailText.text, context)
+                          .then((value) {
+                        setState(() {
+                          emailText.text = "";
+                          SystemChannels.textInput
+                              .invokeMethod('TextInput.hide');
+                        });
+                      });
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(32.0),
+                            bottomRight: Radius.circular(32.0)),
+                      ),
+                      child: Text(
+                        "Search",
+                        style: TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   openAlertBox() {
     return showDialog(
         context: context,
@@ -189,7 +295,8 @@ class _HomePageState extends State<HomePage> {
                         controller: searchText,
                         textInputAction: TextInputAction.search,
                         decoration: InputDecoration(
-                          hintText: "Search...",
+                          hintText:
+                              "Search product by brand, company, name & id",
                           border: InputBorder.none,
                           contentPadding:
                               EdgeInsets.only(left: 15.0, top: 15.0),
@@ -208,7 +315,15 @@ class _HomePageState extends State<HomePage> {
                   ),
                   InkWell(
                     onTap: () {
-                      HomeApi.getSearchByProduct(searchText.text, context);
+                      Navigator.of(context).pop();
+                      HomeApi.getSearchByProduct(searchText.text, context)
+                          .then((value) {
+                        setState(() {
+                          searchText.text = "";
+                          SystemChannels.textInput
+                              .invokeMethod('TextInput.hide');
+                        });
+                      });
                     },
                     child: Container(
                       width: double.infinity,
