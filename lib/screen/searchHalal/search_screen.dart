@@ -48,7 +48,10 @@ class _SearchScreenState extends State<SearchScreen> {
                         decoration: new BoxDecoration(
                           color: const Color(0xff7c94b6),
                           image: new DecorationImage(
-                            image: AssetImage('assets/images/susu.jpg'),
+                            image: widget.imageProduct != ""
+                                ? NetworkImage('https://hayyshop.xyz/image/' +
+                                    widget.imageProduct)
+                                : AssetImage('assets/images/susu.jpg'),
                             fit: BoxFit.cover,
                           ),
                           borderRadius:

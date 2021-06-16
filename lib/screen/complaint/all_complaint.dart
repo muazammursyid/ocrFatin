@@ -142,7 +142,7 @@ class _AllComplaintState extends State<AllComplaint> {
     return Row(
       children: [
         Container(
-          width: 120,
+          width: 145,
           child: Row(
             children: [
               Text(

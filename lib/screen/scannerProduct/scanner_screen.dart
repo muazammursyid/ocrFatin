@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ocr_barcode_flutter/screen/home/api/homeApi.dart';
+import 'package:ocr_barcode_flutter/widget/header_logo.dart';
 
 class ScannerScreen extends StatefulWidget {
   @override
@@ -20,6 +21,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
   bool isImageLoaded = false;
 
   var result = '';
+  bool loading = false;
 
   Future<void> _showChoiceDialog(BuildContext context) {
     return showDialog(
@@ -142,10 +144,25 @@ class _ScannerScreenState extends State<ScannerScreen> {
     for (TextBlock block in readText.blocks) {
       for (TextLine line in block.lines) {
         for (TextElement word in line.elements) {
-          setState(() {
-            result = result + ' ' + word.text;
-            comment.text = result;
-          });
+          loading = false;
+          print(word.text.length);
+          print(word.text.contains('MS'));
+          if (word.text.contains('MS')) {
+            print('here');
+          } else {
+            if (word.text.length == 11 || word.text.length == 12) {
+              setState(() {
+                result = result + ' ' + word.text;
+                comment.text = result;
+              });
+              break;
+            } else {
+              setState(() {
+                comment.text =
+                    'We do not read properly. Please upload image with properly';
+              });
+            }
+          }
         }
       }
     }
@@ -170,19 +187,9 @@ class _ScannerScreenState extends State<ScannerScreen> {
               children: [
                 Column(
                   children: [
+                    HeaderLogo(),
                     SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(15),
-                      width: double.infinity,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        image: DecorationImage(
-                            image: AssetImage("assets/images/logo.png"),
-                            fit: BoxFit.fitWidth),
-                      ),
+                      height: 70,
                     ),
                     isImageLoaded
                         ? Center(
@@ -202,7 +209,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                           )
                         : Container(),
                     SizedBox(
-                      height: 30,
+                      height: 20,
                     ),
                     !isImageLoaded && imageFile != null
                         ? Center(
@@ -265,7 +272,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
                             height: 50,
                             child: RaisedButton(
                               onPressed: () {
-                                HomeApi.getSearchByProduct(
+                                HomeApi.getSearchByProductFromScanner(
                                     comment.text, context);
                               },
                               shape: RoundedRectangleBorder(
@@ -301,43 +308,51 @@ class _ScannerScreenState extends State<ScannerScreen> {
                         : SizedBox(),
                     SizedBox(height: 20),
                     isImageLoaded
-                        ? SizedBox(
-                            width: 150,
-                            height: 50,
-                            child: RaisedButton(
-                              onPressed: () {
-                                readTextFromanImage();
-                              },
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(80.0)),
-                              padding: const EdgeInsets.all(0.0),
-                              child: Ink(
-                                decoration: const BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: <Color>[
-                                      Colors.blue,
-                                      Colors.blue,
-                                      Colors.blueAccent
-                                    ],
+                        ? loading
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : SizedBox(
+                                width: 200,
+                                height: 50,
+                                child: RaisedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      loading = true;
+                                    });
+                                    readTextFromanImage();
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(80.0)),
+                                  padding: const EdgeInsets.all(0.0),
+                                  child: Ink(
+                                    decoration: const BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: <Color>[
+                                          Colors.blue,
+                                          Colors.blue,
+                                          Colors.blueAccent
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(80.0)),
+                                    ),
+                                    child: Container(
+                                      constraints: const BoxConstraints(
+                                          minWidth: 88.0,
+                                          minHeight:
+                                              36.0), // min sizes for Material buttons
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        'Not accurate? Scan Again',
+                                        style: TextStyle(color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
                                   ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(80.0)),
                                 ),
-                                child: Container(
-                                  constraints: const BoxConstraints(
-                                      minWidth: 88.0,
-                                      minHeight:
-                                          36.0), // min sizes for Material buttons
-                                  alignment: Alignment.center,
-                                  child: const Text(
-                                    'scan Product',
-                                    style: TextStyle(color: Colors.white),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
+                              )
                         : SizedBox(),
                     SizedBox(height: 20),
                   ],
@@ -346,7 +361,8 @@ class _ScannerScreenState extends State<ScannerScreen> {
                   left: 5,
                   top: 30,
                   child: BackButton(),
-                )
+                ),
+                HeaderLogoHalal(),
               ],
             ),
           ),

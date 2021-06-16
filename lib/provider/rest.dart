@@ -18,7 +18,7 @@ class GetAPI {
           globals.isProduction ? globals.urlProduction : globals.urlStagging;
       String jsonBody = json.encode(jsons);
       print(jsonBody);
-      print("$phpFile");
+      print("$api$phpFile");
       Uri url = Uri.parse('$api$phpFile');
       final ioc = new HttpClient();
       ioc.badCertificateCallback =

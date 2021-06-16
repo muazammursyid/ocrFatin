@@ -172,7 +172,7 @@ class _ComplaintViewState extends State<ComplaintView> {
     return Row(
       children: [
         Container(
-          width: 120,
+          width: 145,
           child: Row(
             children: [
               Text(

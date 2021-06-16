@@ -4,7 +4,8 @@ import 'package:ocr_barcode_flutter/screen/searchHalal/search_screen.dart';
 
 class DisplayByProduct extends StatefulWidget {
   List<ProductData> listProduct = [];
-  DisplayByProduct({this.listProduct});
+  final bool result;
+  DisplayByProduct({this.listProduct, @required this.result});
 
   @override
   _DisplayByProductState createState() => _DisplayByProductState();
@@ -100,8 +101,12 @@ class _DisplayByProductState extends State<DisplayByProduct> {
                                       height: 120,
                                       decoration: new BoxDecoration(
                                         image: new DecorationImage(
-                                          image: AssetImage(
-                                              'assets/images/susu.jpg'),
+                                          image: item.filename != ""
+                                              ? NetworkImage(
+                                                  'https://hayyshop.xyz/image/' +
+                                                      item.filename)
+                                              : AssetImage(
+                                                  'assets/images/susu.jpg'),
                                           fit: BoxFit.cover,
                                         ),
                                         borderRadius: new BorderRadius.all(
@@ -186,7 +191,47 @@ class _DisplayByProductState extends State<DisplayByProduct> {
                           ],
                         );
                       }).toList(),
-                    )
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    widget.result
+                        ? SizedBox(
+                            width: 150,
+                            height: 50,
+                            child: RaisedButton(
+                              onPressed: () {},
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(80.0)),
+                              padding: const EdgeInsets.all(0.0),
+                              child: Ink(
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: <Color>[
+                                      Colors.red,
+                                      Colors.red,
+                                      Colors.redAccent
+                                    ],
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(80.0)),
+                                ),
+                                child: Container(
+                                  constraints: const BoxConstraints(
+                                      minWidth: 88.0,
+                                      minHeight:
+                                          36.0), // min sizes for Material buttons
+                                  alignment: Alignment.center,
+                                  child: const Text(
+                                    'Complaint Product',
+                                    style: TextStyle(color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : SizedBox()
                   ],
                 ),
               ),

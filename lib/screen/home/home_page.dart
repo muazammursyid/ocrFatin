@@ -5,6 +5,8 @@ import 'package:lottie/lottie.dart';
 import 'package:ocr_barcode_flutter/screen/home/api/homeApi.dart';
 import 'package:ocr_barcode_flutter/screen/login/login_screen.dart';
 import 'package:ocr_barcode_flutter/screen/scannerProduct/scanner_screen.dart';
+import 'package:ocr_barcode_flutter/widget/header_logo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,6 +17,7 @@ class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
   final searchText = TextEditingController();
   final emailText = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,92 +29,120 @@ class _HomePageState extends State<HomePage> {
               image: AssetImage("assets/images/backgroundhalal.png"),
               fit: BoxFit.cover)),
       child: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Colors.transparent,
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            child: Stack(
               children: [
-                Container(
-                  margin: EdgeInsets.all(15),
-                  width: double.infinity,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    image: DecorationImage(
-                        image: AssetImage("assets/images/logo.png"),
-                        fit: BoxFit.fitWidth),
-                  ),
-                ),
-                Text(
-                  'WELCOME TO HALAL SCANNER',
-                  style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      color: Colors.black),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ScannerScreen(),
-                      ),
-                    );
-                  },
-                  child: buildContainer('assets/images/scanlottie.json',
-                      'SCAN HALAL PRODUCT', 60),
-                ),
-                InkWell(
-                  onTap: () {
-                    openAlertBox();
-                  },
-                  child: buildContainer('assets/images/searchlottie.json',
-                      'SEARCH HALAL\nPRODUCT', 10),
-                ),
-                InkWell(
-                  onTap: () {
-                    openDialogComplaint();
-                  },
-                  child: buildContainer('assets/images/comment.json',
-                      'My Complaint'.toUpperCase(), 10),
-                ),
-                Text(
-                  'Click On The Link Bellow For',
-                  style: TextStyle(color: Colors.black),
-                ),
-                RichText(
-                  text: new TextSpan(
-                    children: [
-                      new TextSpan(
-                        text: 'Admin Log In : ',
-                        style: new TextStyle(color: Colors.black),
-                      ),
-                      new TextSpan(
-                        text: 'Admin Login',
-                        style: new TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    HeaderLogo(),
+                    SizedBox(
+                      height: 70,
+                    ),
+                    Text(
+                      'WELCOME TO HALAL SCANNER',
+                      style: TextStyle(
+                          fontFamily: 'Roboto',
                           fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.black),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ScannerScreen(),
+                          ),
+                        );
+                      },
+                      child: buildContainer('assets/images/scanlottie.json',
+                          'SCAN HALAL PRODUCT', 60),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        openAlertBox();
+                      },
+                      child: buildContainer('assets/images/searchlottie.json',
+                          'SEARCH HALAL\nPRODUCT', 10),
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        String email = prefs.getString('email');
+                        HomeApi.getMyComplaint(email, context).then((value) {
+                          setState(() {
+                            emailText.text = "";
+                            SystemChannels.textInput
+                                .invokeMethod('TextInput.hide');
+                          });
+                        });
+                      },
+                      child: buildContainer('assets/images/comment.json',
+                          'My Complaint'.toUpperCase(), 10),
+                    ),
+                    // Text(
+                    //   'Click On The Link Bellow For',
+                    //   style: TextStyle(color: Colors.black),
+                    // ),
+                    // RichText(
+                    //   text: new TextSpan(
+                    //     children: [
+                    //       new TextSpan(
+                    //         text: 'Admin Log In : ',
+                    //         style: new TextStyle(color: Colors.black),
+                    //       ),
+                    //       new TextSpan(
+                    //         text: 'Admin Login',
+                    //         style: new TextStyle(
+                    //           color: Colors.blue,
+                    //           decoration: TextDecoration.underline,
+                    //           fontWeight: FontWeight.bold,
+                    //         ),
+                    //         recognizer: new TapGestureRecognizer()
+                    //           ..onTap = () {
+                    //             Navigator.push(
+                    //               context,
+                    //               MaterialPageRoute(
+                    //                 builder: (context) => LoginScreen(),
+                    //               ),
+                    //             );
+                    //           },
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                  ],
+                ),
+                Positioned(
+                  left: 5,
+                  top: 5,
+                  child: InkWell(
+                    onTap: () async {
+                      final pref = await SharedPreferences.getInstance();
+                      await pref.clear();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginScreen(),
                         ),
-                        recognizer: new TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LoginScreen(),
-                              ),
-                            );
-                          },
-                      ),
-                    ],
+                      );
+                    },
+                    child: Icon(
+                      Icons.logout,
+                      size: 35,
+                    ),
                   ),
                 ),
-                SizedBox(
-                  height: 40,
-                ),
+                HeaderLogoHalal(),
               ],
             ),
           ),
@@ -316,7 +347,8 @@ class _HomePageState extends State<HomePage> {
                   InkWell(
                     onTap: () {
                       Navigator.of(context).pop();
-                      HomeApi.getSearchByProduct(searchText.text, context)
+                      HomeApi.getSearchByProduct(
+                              searchText.text, _scaffoldKey.currentContext)
                           .then((value) {
                         setState(() {
                           searchText.text = "";

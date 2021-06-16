@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ocr_barcode_flutter/screen/addProduct/add_product.dart';
 import 'package:ocr_barcode_flutter/screen/complaint/all_complaint.dart';
+import 'package:ocr_barcode_flutter/screen/login/login_screen.dart';
 import 'package:ocr_barcode_flutter/screen/updateProduct/all_product.dart';
+import 'package:ocr_barcode_flutter/widget/header_logo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AdminScreen extends StatefulWidget {
   final String username;
@@ -29,19 +32,9 @@ class _AdminScreenState extends State<AdminScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      margin: EdgeInsets.all(15),
-                      width: double.infinity,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        image: DecorationImage(
-                            image: AssetImage("assets/images/logo.png"),
-                            fit: BoxFit.fitWidth),
-                      ),
-                    ),
+                    HeaderLogo(),
                     SizedBox(
-                      height: 80,
+                      height: 100,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 30, right: 40),
@@ -131,8 +124,24 @@ class _AdminScreenState extends State<AdminScreen> {
                 Positioned(
                   left: 5,
                   top: 5,
-                  child: BackButton(),
-                )
+                  child: InkWell(
+                    onTap: () async {
+                      final pref = await SharedPreferences.getInstance();
+                      await pref.clear();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginScreen(),
+                        ),
+                      );
+                    },
+                    child: Icon(
+                      Icons.logout,
+                      size: 35,
+                    ),
+                  ),
+                ),
+                HeaderLogoHalal(),
               ],
             ),
           ),
