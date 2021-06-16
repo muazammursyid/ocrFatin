@@ -93,7 +93,7 @@ class _UpdateProductState extends State<UpdateProduct> {
                           decoration: new BoxDecoration(
                             color: const Color(0xff7c94b6),
                             image: new DecorationImage(
-                              image: AssetImage('assets/images/susu.jpg'),
+                              image: AssetImage('assets/images/noImage.jpeg'),
                               fit: BoxFit.cover,
                             ),
                             borderRadius:

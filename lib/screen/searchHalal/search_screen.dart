@@ -51,7 +51,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             image: widget.imageProduct != ""
                                 ? NetworkImage('https://hayyshop.xyz/image/' +
                                     widget.imageProduct)
-                                : AssetImage('assets/images/susu.jpg'),
+                                : AssetImage('assets/images/noImage.jpeg'),
                             fit: BoxFit.cover,
                           ),
                           borderRadius:

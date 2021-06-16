@@ -171,8 +171,12 @@ class _AllProductState extends State<AllProduct> {
                                             height: 120,
                                             decoration: new BoxDecoration(
                                               image: new DecorationImage(
-                                                image: AssetImage(
-                                                    'assets/images/susu.jpg'),
+                                                image: item.filename != ""
+                                                    ? NetworkImage(
+                                                        'https://hayyshop.xyz/image/' +
+                                                            item.filename)
+                                                    : AssetImage(
+                                                        'assets/images/noImage.jpeg'),
                                                 fit: BoxFit.cover,
                                               ),
                                               borderRadius: new BorderRadius
@@ -324,7 +328,7 @@ class _AllProductState extends State<AllProduct> {
                                             decoration: new BoxDecoration(
                                               image: new DecorationImage(
                                                 image: AssetImage(
-                                                    'assets/images/susu.jpg'),
+                                                    'assets/images/noImage.jpeg'),
                                                 fit: BoxFit.cover,
                                               ),
                                               borderRadius: new BorderRadius

@@ -106,7 +106,7 @@ class _DisplayByProductState extends State<DisplayByProduct> {
                                                   'https://hayyshop.xyz/image/' +
                                                       item.filename)
                                               : AssetImage(
-                                                  'assets/images/susu.jpg'),
+                                                  'assets/images/noImage.jpeg'),
                                           fit: BoxFit.cover,
                                         ),
                                         borderRadius: new BorderRadius.all(

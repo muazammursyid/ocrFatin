@@ -41,6 +41,9 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 GestureDetector(
                   child: Text("Choose from gallery"),
                   onTap: () {
+                    setState(() {
+                      comment.text = "";
+                    });
                     _openGallery(context);
                   },
                 ),
@@ -51,6 +54,9 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 GestureDetector(
                   child: Text("Take photo"),
                   onTap: () {
+                    setState(() {
+                      comment.text = "";
+                    });
                     _openCamera(context);
                   },
                 )
