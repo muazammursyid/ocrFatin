@@ -194,7 +194,14 @@ class _DisplayByProductState extends State<DisplayByProduct> {
                       }).toList(),
                     ),
                     SizedBox(
-                      height: 30,
+                      height: 20,
+                    ),
+                    Text(
+                      'Note :  sini ayat fatin',
+                      style: TextStyle(color: Colors.redAccent),
+                    ),
+                    SizedBox(
+                      height: 10,
                     ),
                     widget.result
                         ? SizedBox(
@@ -239,7 +246,10 @@ class _DisplayByProductState extends State<DisplayByProduct> {
                               ),
                             ),
                           )
-                        : SizedBox()
+                        : SizedBox(),
+                    SizedBox(
+                      height: 40,
+                    ),
                   ],
                 ),
               ),

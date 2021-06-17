@@ -46,7 +46,7 @@ class HomeApi {
                 title: "Warning !",
                 descriptions:
                     'We do not found your search in our database. Do you want make report  ?',
-                textOk: "Laporan",
+                textOk: "Report",
                 img: "assets/images/warning.jpeg",
                 functionOk: () {
                   Navigator.push(
@@ -102,7 +102,7 @@ class HomeApi {
                 title: "Warning !",
                 descriptions:
                     'We do not found your search in our database. Do you want make report ?',
-                textOk: "Laporan",
+                textOk: "Report",
                 img: "assets/images/warning.jpeg",
                 functionOk: () {
                   Navigator.push(

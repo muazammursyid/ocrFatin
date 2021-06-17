@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ocr_barcode_flutter/screen/complaint/complaint_screen.dart';
 import 'package:ocr_barcode_flutter/screen/home/models/searchByProduct.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -78,7 +79,59 @@ class _SearchScreenState extends State<SearchScreen> {
                     makeInput(
                         label: "Company Name", displayText: widget.companyName),
                     SizedBox(
-                      height: 60,
+                      height: 10,
+                    ),
+                    Text(
+                      'Note :  sini ayat fatin2',
+                      style: TextStyle(color: Colors.redAccent),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      width: 150,
+                      height: 50,
+                      child: RaisedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ComplaintScreen(),
+                            ),
+                          );
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(80.0)),
+                        padding: const EdgeInsets.all(0.0),
+                        child: Ink(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: <Color>[
+                                Colors.red,
+                                Colors.red,
+                                Colors.redAccent
+                              ],
+                            ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(80.0)),
+                          ),
+                          child: Container(
+                            constraints: const BoxConstraints(
+                                minWidth: 88.0,
+                                minHeight:
+                                    36.0), // min sizes for Material buttons
+                            alignment: Alignment.center,
+                            child: const Text(
+                              'Complaint Product',
+                              style: TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 40,
                     ),
                   ],
                 ),

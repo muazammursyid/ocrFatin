@@ -51,20 +51,28 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                           ),
                           makeInput(
                               label: "Product Name",
-                              controllerText: productNameText),
+                              controllerText: productNameText,
+                              disable: false),
                           makeInput(
                               label: "Company Name",
-                              controllerText: companyNameText),
+                              controllerText: companyNameText,
+                              disable: false),
                           makeInput(
                               label: "Complaint",
-                              controllerText: complaintProductText),
+                              controllerText: complaintProductText,
+                              disable: false),
                           makeInput(
-                              label: "Username", controllerText: usernameText),
+                              label: "Username",
+                              controllerText: usernameText,
+                              disable: true),
                           makeInput(
                               label: "Number Telephone",
-                              controllerText: userTelefone),
+                              controllerText: userTelefone,
+                              disable: false),
                           makeInput(
-                              label: "User Email", controllerText: userEmail),
+                              label: "User Email",
+                              controllerText: userEmail,
+                              disable: true),
                           SizedBox(
                             height: 20,
                           ),
@@ -144,6 +152,7 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
     label,
     TextEditingController controllerText,
     Function onTap,
+    bool disable,
   }) {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 2),
@@ -162,6 +171,7 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
           ),
           TextField(
             onTap: onTap,
+            readOnly: disable,
             controller: controllerText,
             decoration: InputDecoration(
               contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
