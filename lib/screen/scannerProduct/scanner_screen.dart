@@ -153,16 +153,26 @@ class _ScannerScreenState extends State<ScannerScreen> {
           loading = false;
           print(word.text.length);
           print(word.text.contains('MS'));
+          //* kalau jumpa ms auto tknk buat proses
           if (word.text.contains('MS')) {
             print('here');
           } else {
-            if (word.text.length == 11 || word.text.length == 12) {
+            //* kt sni akan ada no 11 dan 12 so dia looping by bila jumpa 2 no ni
+            if (word.text.length == 11) {
+              //* once dia da jumpa auto break tknk dia loop lgi dah..
               setState(() {
-                result = result + ' ' + word.text;
+                result = word.text;
                 comment.text = result;
               });
               break;
+            } else if (word.text.length == 12) {
+              setState(() {
+                result = word.text;
+                comment.text = result.substring(1);
+              });
+              break;
             } else {
+              //* klau tk jumpa no 2 tu dia trus ke sni
               setState(() {
                 comment.text =
                     'We do not read properly. Please upload image with properly';
