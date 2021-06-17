@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'api/complaintAPI.dart';
+import 'details_complaint.dart';
 import 'model/allComplaintModel.dart';
 
 class AllComplaint extends StatefulWidget {
@@ -12,6 +13,7 @@ class AllComplaint extends StatefulWidget {
 
 class _AllComplaintState extends State<AllComplaint> {
   List<Datum> listAllComplaint = [];
+  bool loading = true;
   @override
   void initState() {
     super.initState();
@@ -19,6 +21,7 @@ class _AllComplaintState extends State<AllComplaint> {
       setState(() {
         print(value);
         listAllComplaint = value;
+        loading = false;
       });
     });
   }
@@ -26,115 +29,134 @@ class _AllComplaintState extends State<AllComplaint> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
+      body: loading
+          ? Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: SafeArea(
+                child: Stack(
                   children: [
-                    SizedBox(
-                      height: 60,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Total Complaint : ${listAllComplaint.length}'
-                              .toUpperCase(),
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Column(
-                      children: listAllComplaint.map((item) {
-                        return Container(
-                          margin: EdgeInsets.only(top: 20),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                                bottomRight: Radius.circular(10)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 3,
-                                blurRadius: 7,
-                                offset:
-                                    Offset(0, 3), // changes position of shadow
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 60,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Total Complaint : ${listAllComplaint.length}'
+                                    .toUpperCase(),
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
                               ),
                             ],
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10, right: 10, top: 10, bottom: 10),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                buildRowContent(
-                                    'Product Name', item.productName),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                buildRowContent(
-                                    'Company Name', item.companyName),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                buildRowContent('Complaint', item.complaint),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                buildRowContent('Username', item.userName),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                buildRowContent(
-                                    'Created Date', item.createDate),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                              ],
-                            ),
+                          SizedBox(
+                            height: 20,
                           ),
-                        );
-                      }).toList(),
+                          Column(
+                            children: listAllComplaint.map((item) {
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetailsComplaint(
+                                        detailsComplaint: item,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 20),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10),
+                                        bottomLeft: Radius.circular(10),
+                                        bottomRight: Radius.circular(10)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 3,
+                                        blurRadius: 7,
+                                        offset: Offset(
+                                            0, 3), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 10,
+                                        bottom: 10),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        buildRowContent(
+                                            'Product Name', item.productName),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        buildRowContent(
+                                            'Company Name', item.companyName),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        buildRowContent(
+                                            'Complaint', item.complaint),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        buildRowContent(
+                                            'Username', item.userName),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        buildRowContent(
+                                            'Created Date', item.createDate),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          )
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      left: 5,
+                      top: 5,
+                      child: Row(
+                        children: [
+                          BackButton(),
+                          Text(
+                            'My Complaint',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: 18),
+                          ),
+                        ],
+                      ),
                     )
                   ],
                 ),
               ),
-              Positioned(
-                left: 5,
-                top: 5,
-                child: Row(
-                  children: [
-                    BackButton(),
-                    Text(
-                      'My Complaint',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 18),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 

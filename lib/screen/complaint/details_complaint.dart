@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:ocr_barcode_flutter/screen/home/models/complaintData.dart';
 
-import 'api/complaintAPI.dart';
+import 'model/allComplaintModel.dart';
 
-class ComplaintUpdate extends StatefulWidget {
-  final DatumComplaint detailsComplaint;
-
-  ComplaintUpdate({Key key, this.detailsComplaint}) : super(key: key);
-
+class DetailsComplaint extends StatefulWidget {
+  final Datum detailsComplaint;
+  DetailsComplaint({this.detailsComplaint});
   @override
-  _ComplaintUpdateState createState() => _ComplaintUpdateState();
+  _DetailsComplaintState createState() => _DetailsComplaintState();
 }
 
-class _ComplaintUpdateState extends State<ComplaintUpdate> {
+class _DetailsComplaintState extends State<DetailsComplaint> {
   final productNameText = TextEditingController();
   final companyNameText = TextEditingController();
   final complaintProductText = TextEditingController();
@@ -77,50 +73,6 @@ class _ComplaintUpdateState extends State<ComplaintUpdate> {
                         SizedBox(
                           height: 20,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 30, right: 40),
-                          child: SizedBox(
-                            height: 50,
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  loading = true;
-                                });
-                                DateTime now = DateTime.now();
-                                String updateDate =
-                                    DateFormat('yyyy-MM-dd').format(now);
-                                var jsons = {
-                                  "idx": widget.detailsComplaint.idx,
-                                  "product_name": productNameText.text,
-                                  "company_name": companyNameText.text,
-                                  "complaint": companyNameText.text,
-                                  "user_name": usernameText.text,
-                                  "user_telephone": userTelefone.text,
-                                  "user_email": userEmail.text,
-                                  "create_by": createBy,
-                                  "create_date": createDate,
-                                  "update_by": userEmail.text,
-                                  "update_date": updateDate,
-                                };
-                                ComplainAPI.getUpdateComplaint(jsons, context)
-                                    .then((value) {
-                                  setState(() {
-                                    loading = false;
-                                  });
-                                });
-                              },
-                              child: Text('Submit'),
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.green,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(5), // <-- Radius
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                         SizedBox(
                           height: 20,
                         )
@@ -133,7 +85,7 @@ class _ComplaintUpdateState extends State<ComplaintUpdate> {
                         children: [
                           BackButton(),
                           Text(
-                            'Update Complaint',
+                            'Details Complaint',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,

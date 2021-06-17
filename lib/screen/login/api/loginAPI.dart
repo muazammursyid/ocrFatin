@@ -21,6 +21,8 @@ class LoginAPI {
           prefs.setString("idx", map["Data"][0]["idx"]);
           prefs.setString("fullname", map["Data"][0]["fullname"]);
           prefs.setString('email', map["Data"][0]["email"]);
+          prefs.setString('username', map["Data"][0]["username"]);
+          prefs.setString('userRole', map["Data"][0]["user_role"]);
           if (map["Data"][0]["user_role"] != "user") {
             Navigator.pushReplacement(
               context,
@@ -46,7 +48,7 @@ class LoginAPI {
                 return CustomDialogBox(
                   title: "Unsuccessful !",
                   descriptions:
-                      "Your username and password is incorecct. Please try again",
+                      "Your username and password is incorrect. Please try again",
                   text: "Ok",
                 );
               });

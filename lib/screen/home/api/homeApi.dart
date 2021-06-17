@@ -21,7 +21,7 @@ class HomeApi {
       print(response);
       if (statusCode == 200) {
         final goodConductData = goodConductDataFromJson(response);
-        if (goodConductData.result) {
+        if (goodConductData.message == "Success") {
           if (isFromSearch) {
             return goodConductData.data;
           }
@@ -80,7 +80,7 @@ class HomeApi {
       print(response);
       if (statusCode == 200) {
         final goodConductData = goodConductDataFromJson(response);
-        if (goodConductData.result) {
+        if (goodConductData.message == "Success") {
           Navigator.push(
             context,
             MaterialPageRoute(

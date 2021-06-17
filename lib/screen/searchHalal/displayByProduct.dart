@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ocr_barcode_flutter/screen/complaint/complaint_screen.dart';
 import 'package:ocr_barcode_flutter/screen/home/models/searchByProduct.dart';
 import 'package:ocr_barcode_flutter/screen/searchHalal/search_screen.dart';
 
@@ -200,7 +201,14 @@ class _DisplayByProductState extends State<DisplayByProduct> {
                             width: 150,
                             height: 50,
                             child: RaisedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ComplaintScreen(),
+                                  ),
+                                );
+                              },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(80.0)),
                               padding: const EdgeInsets.all(0.0),

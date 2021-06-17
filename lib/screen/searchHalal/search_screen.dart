@@ -77,6 +77,9 @@ class _SearchScreenState extends State<SearchScreen> {
                         displayText: widget.refNumber),
                     makeInput(
                         label: "Company Name", displayText: widget.companyName),
+                    SizedBox(
+                      height: 60,
+                    ),
                   ],
                 ),
                 Positioned(
@@ -131,7 +134,10 @@ Widget makeInput({label, displayText}) {
               ),
               Text(
                 displayText,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    color: Colors.black),
               ),
               SizedBox(
                 height: 15,

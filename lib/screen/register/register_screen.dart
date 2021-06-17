@@ -18,6 +18,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final fullNameController = TextEditingController();
   final emailController = TextEditingController();
 
+  bool validateUsername = false;
+  bool validatePassword = false;
+  bool validateConfirmPassword = false;
+  bool validateFullName = false;
+  bool validateEmail = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,7 +42,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: [
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           HeaderLogo(),
                           SizedBox(
@@ -55,6 +61,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
                           ),
+                          validateUsername
+                              ? errorEmpty('Username can\'t be blank')
+                              : SizedBox(),
                           Padding(
                             padding: const EdgeInsets.all(15),
                             child: TextField(
@@ -69,6 +78,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
                           ),
+                          validateFullName
+                              ? errorEmpty('Full name can\'t be blank')
+                              : SizedBox(),
                           Padding(
                             padding: const EdgeInsets.all(15),
                             child: TextField(
@@ -83,6 +95,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
                           ),
+                          validateEmail
+                              ? errorEmpty('Email can\'t be blank')
+                              : SizedBox(),
                           Padding(
                             padding: const EdgeInsets.all(15),
                             child: TextField(
@@ -97,6 +112,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
                           ),
+                          validatePassword
+                              ? errorEmpty('Password can\'t be blank')
+                              : SizedBox(),
                           Padding(
                             padding: const EdgeInsets.all(15),
                             child: TextField(
@@ -111,62 +129,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
                           ),
+                          validateConfirmPassword
+                              ? errorEmpty('Confirm Password can\'t be blank')
+                              : SizedBox(),
                           SizedBox(
                             height: 30,
                           ),
-                          SizedBox(
-                            height: 50,
-                            width: 150,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (passwordController.text ==
-                                    confirmPasswordController.text) {
-                                  setState(() {
-                                    loading = true;
-                                  });
-                                  DateTime now = DateTime.now();
-                                  String createDate =
-                                      DateFormat('yyyy-MM-dd').format(now);
-                                  var jsons = {
-                                    "username": userNameController.text,
-                                    "password": passwordController.text,
-                                    "email": emailController.text,
-                                    "fullname": fullNameController.text,
-                                    "user_role": 'user',
-                                    "trans_last_seen": createDate + " 00:00:00",
-                                    "create_by": "admin",
-                                    "create_date": createDate + " 00:00:00",
-                                    "update_by": "admin",
-                                    "update_date": createDate + " 00:00:00"
-                                  };
-                                  RegisterAPI.registerAPI(jsons, context)
-                                      .then((value) {
-                                    setState(() {
-                                      loading = false;
-                                    });
-                                  });
-                                } else {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return CustomDialogBox(
-                                          title: "Unsuccessful !",
-                                          descriptions:
-                                              "Your password and confirm password is not match. Please try again",
-                                          text: "Ok",
-                                        );
-                                      });
-                                }
-                              },
-                              child: Text('REGISTER'),
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.green,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(5), // <-- Radius
+                          Align(
+                            child: SizedBox(
+                              height: 50,
+                              width: 150,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  checkEmptyField();
+                                  checkValiation();
+                                },
+                                child: Text('REGISTER'),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.green,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(5), // <-- Radius
+                                  ),
                                 ),
                               ),
                             ),
+                          ),
+                          SizedBox(
+                            height: 50,
                           ),
                         ],
                       ),
@@ -180,6 +170,80 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
               ),
+      ),
+    );
+  }
+
+  checkEmptyField() {
+    setState(() {
+      userNameController.text.isEmpty
+          ? validateUsername = true
+          : validateUsername = false;
+      passwordController.text.isEmpty
+          ? validatePassword = true
+          : validatePassword = false;
+      confirmPasswordController.text.isEmpty
+          ? validateConfirmPassword = true
+          : validateConfirmPassword = false;
+      fullNameController.text.isEmpty
+          ? validateFullName = true
+          : validateFullName = false;
+      emailController.text.isEmpty
+          ? validateEmail = true
+          : validateEmail = false;
+    });
+  }
+
+  checkValiation() {
+    if (!validateUsername &&
+        !validatePassword &&
+        !validateConfirmPassword &&
+        !validateFullName &&
+        !validateEmail) {
+      if (passwordController.text == confirmPasswordController.text) {
+        setState(() {
+          loading = true;
+        });
+        DateTime now = DateTime.now();
+        String createDate = DateFormat('yyyy-MM-dd').format(now);
+        var jsons = {
+          "username": userNameController.text,
+          "password": passwordController.text,
+          "email": emailController.text,
+          "fullname": fullNameController.text,
+          "user_role": 'user',
+          "trans_last_seen": createDate + " 00:00:00",
+          "create_by": "admin",
+          "create_date": createDate + " 00:00:00",
+          "update_by": "admin",
+          "update_date": createDate + " 00:00:00"
+        };
+        RegisterAPI.registerAPI(jsons, context).then((value) {
+          setState(() {
+            loading = false;
+          });
+        });
+      } else {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CustomDialogBox(
+                title: "Unsuccessful !",
+                descriptions:
+                    "Your password and confirm password is not match. Please try again",
+                text: "Ok",
+              );
+            });
+      }
+    }
+  }
+
+  Padding errorEmpty(alert) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 30),
+      child: Text(
+        alert,
+        style: TextStyle(color: Colors.redAccent),
       ),
     );
   }
