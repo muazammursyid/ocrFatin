@@ -40,7 +40,7 @@ class UpdateProductAPi {
                 return CustomDialogBox(
                   title: "Success ! ",
                   img: 'assets/images/success.jpeg',
-                  descriptions: "Your product successful updated. ",
+                  descriptions: "Product successfully updated.",
                   text: "Ok",
                 );
               }).then((value) => Navigator.of(context).pop());

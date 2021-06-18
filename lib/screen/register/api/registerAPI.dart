@@ -30,7 +30,7 @@ class RegisterAPI {
                 return CustomDialogBox(
                   title: "Unsuccessful !",
                   descriptions:
-                      "Your username and password is incorecct. Please try again",
+                      "Your username and password is incorrect. Please try again",
                   text: "Ok",
                 );
               });
@@ -42,7 +42,7 @@ class RegisterAPI {
               return CustomDialogBox(
                 title: "Unsuccessful !",
                 descriptions:
-                    "Your username and password is incorecct. Please try again",
+                    "Your username and password is incorrect. Please try again",
                 text: "Ok",
               );
             });

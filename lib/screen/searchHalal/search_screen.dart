@@ -82,7 +82,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       height: 10,
                     ),
                     Text(
-                      'Note :  sini ayat fatin2',
+                      'Any complaint regarding the product, please let us know.',
                       style: TextStyle(color: Colors.redAccent),
                     ),
                     SizedBox(

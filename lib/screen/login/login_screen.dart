@@ -37,9 +37,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 70.0,
                           ),
                           Text(
-                            'Login',
+                            'LOGIN',
                             style: TextStyle(
-                                fontSize: 25.0, fontWeight: FontWeight.bold),
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25),
                           ),
                           SizedBox(
                             height: 30.0,
@@ -72,32 +74,56 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: 80,
+                            height: 15, //adjust kt sni
                           ),
-                          SizedBox(
-                            height: 50,
-                            width: 150,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  loading = true;
-                                });
-                                var jsons = {
-                                  "user": userNameController.text,
-                                  "pass": passwordController.text
-                                };
-                                LoginAPI.loginApi(jsons, context).then((value) {
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 15),
+                            child: SizedBox(
+                              width: double.infinity,
+                              height: 50,
+                              child: RaisedButton(
+                                onPressed: () {
                                   setState(() {
-                                    loading = false;
+                                    loading = true;
                                   });
-                                });
-                              },
-                              child: Text('LOGIN'),
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.green,
+                                  var jsons = {
+                                    "user": userNameController.text,
+                                    "pass": passwordController.text
+                                  };
+                                  LoginAPI.loginApi(jsons, context)
+                                      .then((value) {
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                  });
+                                },
                                 shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(5), // <-- Radius
+                                    borderRadius: BorderRadius.circular(80.0)),
+                                padding: const EdgeInsets.all(0.0),
+                                child: Ink(
+                                  decoration: const BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: <Color>[
+                                        Color(0xFF4527A0),
+                                        Color(0xFF512DA8),
+                                        Color(0xFFEF9A9A)
+                                      ],
+                                    ),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(80.0)),
+                                  ),
+                                  child: Container(
+                                    constraints: const BoxConstraints(
+                                        minWidth: 88.0,
+                                        minHeight:
+                                            36.0), // min sizes for Material buttons
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      'Login',
+                                      style: TextStyle(color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -105,24 +131,47 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(
                             height: 10,
                           ),
-                          SizedBox(
-                            height: 50,
-                            width: 150,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => RegisterScreen(),
-                                  ),
-                                );
-                              },
-                              child: Text('REGISTER'),
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.blue,
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 15),
+                            child: SizedBox(
+                              width: double.infinity,
+                              height: 50,
+                              child: RaisedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => RegisterScreen(),
+                                    ),
+                                  );
+                                },
                                 shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(5), // <-- Radius
+                                    borderRadius: BorderRadius.circular(80.0)),
+                                padding: const EdgeInsets.all(0.0),
+                                child: Ink(
+                                  decoration: const BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: <Color>[
+                                        Color(0xFF455A64),
+                                        Color(0xFF546E7A),
+                                        Color(0xFFEF9A9A)
+                                      ],
+                                    ),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(80.0)),
+                                  ),
+                                  child: Container(
+                                    constraints: const BoxConstraints(
+                                        minWidth: 88.0,
+                                        minHeight:
+                                            36.0), // min sizes for Material buttons
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      'Register',
+                                      style: TextStyle(color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),

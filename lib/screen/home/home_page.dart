@@ -18,6 +18,16 @@ class _HomePageState extends State<HomePage> {
   final searchText = TextEditingController();
   final emailText = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  String username = "";
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((prefs) {
+      setState(() {
+        username = prefs.getString('username');
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +41,31 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.indigo[200],
+          title: Text(
+            'Hello, $username'.toUpperCase() + '👋!',
+            style: TextStyle(color: Colors.black, letterSpacing: 2),
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.logout,
+                color: Colors.black,
+              ),
+              onPressed: () async {
+                final pref = await SharedPreferences.getInstance();
+                await pref.clear();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginScreen(),
+                  ),
+                );
+              },
+            )
+          ],
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Stack(
@@ -122,26 +157,26 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                Positioned(
-                  left: 5,
-                  top: 5,
-                  child: InkWell(
-                    onTap: () async {
-                      final pref = await SharedPreferences.getInstance();
-                      await pref.clear();
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
-                        ),
-                      );
-                    },
-                    child: Icon(
-                      Icons.logout,
-                      size: 35,
-                    ),
-                  ),
-                ),
+                // Positioned(
+                //   left: 5,
+                //   top: 5,
+                //   child: InkWell(
+                //     onTap: () async {
+                //       final pref = await SharedPreferences.getInstance();
+                //       await pref.clear();
+                //       Navigator.pushReplacement(
+                //         context,
+                //         MaterialPageRoute(
+                //           builder: (context) => LoginScreen(),
+                //         ),
+                //       );
+                //     },
+                //     child: Icon(
+                //       Icons.logout,
+                //       size: 35,
+                //     ),
+                //   ),
+                // ),
                 HeaderLogoHalal(),
               ],
             ),

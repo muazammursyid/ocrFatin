@@ -197,7 +197,7 @@ class _DisplayByProductState extends State<DisplayByProduct> {
                       height: 20,
                     ),
                     Text(
-                      'Note :  sini ayat fatin',
+                      'Any complaint regarding the product, please let us know.',
                       style: TextStyle(color: Colors.redAccent),
                     ),
                     SizedBox(

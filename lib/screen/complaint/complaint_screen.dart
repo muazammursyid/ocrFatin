@@ -81,7 +81,7 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                             child: SizedBox(
                               height: 50,
                               width: double.infinity,
-                              child: ElevatedButton(
+                              child: RaisedButton(
                                 onPressed: () {
                                   setState(() {
                                     loading = true;
@@ -108,12 +108,32 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                                     });
                                   });
                                 },
-                                child: Text('Submit'),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.green,
-                                  shape: RoundedRectangleBorder(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(80.0)),
+                                padding: const EdgeInsets.all(0.0),
+                                child: Ink(
+                                  decoration: const BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: <Color>[
+                                        Color(0xFF4CAF50),
+                                        Color(0xFF66BB6A),
+                                        Color(0xFF81C784)
+                                      ],
+                                    ),
                                     borderRadius:
-                                        BorderRadius.circular(5), // <-- Radius
+                                        BorderRadius.all(Radius.circular(80.0)),
+                                  ),
+                                  child: Container(
+                                    constraints: const BoxConstraints(
+                                        minWidth: 88.0,
+                                        minHeight:
+                                            36.0), // min sizes for Material buttons
+                                    alignment: Alignment.center,
+                                    child: const Text(
+                                      'Submit',
+                                      style: TextStyle(color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                    ),
                                   ),
                                 ),
                               ),

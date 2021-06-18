@@ -20,9 +20,9 @@ class AddProductAPI {
               context: context,
               builder: (BuildContext context) {
                 return CustomDialogBox(
-                  title: "success !",
+                  title: "Success !",
                   img: 'assets/images/success.jpeg',
-                  descriptions: "Produck successfully added.",
+                  descriptions: "Product successfully added.",
                   text: "Ok",
                 );
               }).then((value) => Navigator.of(context).pop());

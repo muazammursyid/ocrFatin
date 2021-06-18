@@ -10,31 +10,32 @@ class HeaderLogo extends StatelessWidget {
     return Container(
       height: 180,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.all(40),
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                image: DecorationImage(
-                    image: AssetImage("assets/images/mlv_lab.png"),
-                    fit: BoxFit.fitWidth),
-              ),
+          Container(
+            margin: EdgeInsets.all(5),
+            width: 140,
+            height: 200,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              image: DecorationImage(
+                  image: AssetImage("assets/images/ukm_logo.png"),
+                  fit: BoxFit.fitWidth),
             ),
           ),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.all(40),
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                image: DecorationImage(
-                    image: AssetImage("assets/images/ukm_logo.png"),
-                    fit: BoxFit.fitWidth),
-              ),
+          SizedBox(
+            width: 10, //* sini boleh adjust juga
+          ),
+          Container(
+            margin: EdgeInsets.all(5),
+            width: 140,
+            height: 200,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              image: DecorationImage(
+                  image: AssetImage("assets/images/mlv_lab2.png"),
+                  fit: BoxFit.fitWidth),
             ),
           ),
         ],

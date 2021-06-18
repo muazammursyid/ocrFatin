@@ -59,8 +59,7 @@ class ComplainAPI {
                 return CustomDialogBox(
                   title: "Success ! ",
                   img: 'assets/images/success.jpeg',
-                  descriptions:
-                      "Your Appeal Application is under investigation. Thank you for contacting us.",
+                  descriptions: "Complaint successfully updated.",
                   text: "Ok",
                 );
               }).then((value) {
