@@ -53,6 +53,14 @@ class _UpdateProductState extends State<UpdateProduct> {
   String expiredForApi;
   bool loading = false;
 
+  bool productNameValidate = false;
+  bool expiredDateValidate = false;
+  bool brandValidate = false;
+  bool referenceValidate = false;
+  bool companyValidate = false;
+  bool idxCompanyValidate = false;
+  bool idxBrandedValidate = false;
+
   @override
   void initState() {
     super.initState();
@@ -139,6 +147,12 @@ class _UpdateProductState extends State<UpdateProduct> {
                         makeInput(
                             label: "Product Name",
                             controllerText: productNameText),
+                        productNameValidate
+                            ? errorEmpty('Product Name can\'t be blank')
+                            : SizedBox(),
+                        SizedBox(
+                          height: 30,
+                        ),
                         makeInput(
                             label: "Halal Status Expiry Date",
                             controllerText: expiredDateText,
@@ -153,6 +167,13 @@ class _UpdateProductState extends State<UpdateProduct> {
                                     DateFormat('yyyy-MM-dd').format(pickedDate);
                               });
                             }),
+                        expiredDateValidate
+                            ? errorEmpty(
+                                'Halal Status Expiry Date can\'t be blank')
+                            : SizedBox(),
+                        SizedBox(
+                          height: 30,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 20, right: 20, top: 2),
@@ -197,12 +218,21 @@ class _UpdateProductState extends State<UpdateProduct> {
                                 ),
                               ),
                             )),
+                        brandValidate
+                            ? errorEmpty('Brand can\'t be blank')
+                            : SizedBox(),
                         SizedBox(
                           height: 30,
                         ),
                         makeInput(
                             label: "Reference Number",
                             controllerText: referenceNumberText),
+                        referenceValidate
+                            ? errorEmpty('Reference Number can\'t be blank')
+                            : SizedBox(),
+                        SizedBox(
+                          height: 30,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,6 +283,9 @@ class _UpdateProductState extends State<UpdateProduct> {
                                 ),
                               ),
                             )),
+                        companyValidate
+                            ? errorEmpty('Company Name can\'t be blank')
+                            : SizedBox(),
                         SizedBox(
                           height: 30,
                         ),
@@ -263,32 +296,8 @@ class _UpdateProductState extends State<UpdateProduct> {
                             height: 50,
                             child: RaisedButton(
                               onPressed: () {
-                                setState(() {
-                                  loading = true;
-                                });
-                                DateTime now = DateTime.now();
-                                String updateDateNow =
-                                    DateFormat('yyyy-MM-dd').format(now);
-                                var jsons = {
-                                  "idx": widget.idx,
-                                  "name": productNameText.text,
-                                  "expired_date": expiredDateText.text,
-                                  "no_ref": referenceNumberText.text,
-                                  "company_id": idxCompany,
-                                  "brand_id": idxBranded,
-                                  "create_by": widget.createBy,
-                                  "create_date": widget.createDate,
-                                  "update_by": widget.username,
-                                  "update_date": updateDateNow,
-                                  "imagebinary": "",
-                                  "filename": "",
-                                  "filetype": "",
-                                };
-                                UpdateProductAPi.getApiUpdateProduct(
-                                        jsons, context)
-                                    .then((value) {
-                                  loading = false;
-                                });
+                                validationCheck();
+                                passValidation();
                               },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(80.0)),
@@ -349,6 +358,64 @@ class _UpdateProductState extends State<UpdateProduct> {
     );
   }
 
+  passValidation() {
+    if (!productNameValidate &&
+        !expiredDateValidate &&
+        !brandValidate &&
+        !referenceValidate &&
+        !companyValidate) {
+      setState(() {
+        loading = true;
+      });
+      DateTime now = DateTime.now();
+      String updateDateNow = DateFormat('yyyy-MM-dd').format(now);
+      var jsons = {
+        "idx": widget.idx,
+        "name": productNameText.text,
+        "expired_date": expiredDateText.text,
+        "no_ref": referenceNumberText.text,
+        "company_id": idxCompany,
+        "brand_id": idxBranded,
+        "create_by": widget.createBy,
+        "create_date": widget.createDate,
+        "update_by": widget.username,
+        "update_date": updateDateNow,
+        "imagebinary": "",
+        "filename": "",
+        "filetype": "",
+      };
+      UpdateProductAPi.getApiUpdateProduct(jsons, context).then((value) {
+        loading = false;
+      });
+    }
+  }
+
+  Padding errorEmpty(alert) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20),
+      child: Text(
+        alert,
+        style: TextStyle(color: Colors.redAccent),
+      ),
+    );
+  }
+
+  validationCheck() {
+    setState(() {
+      productNameText.text.isEmpty
+          ? productNameValidate = true
+          : productNameValidate = false;
+      expiredDateText.text.isEmpty
+          ? expiredDateValidate = true
+          : expiredDateValidate = false;
+      idxBranded == null ? brandValidate = true : brandValidate = false;
+      referenceNumberText.text.isEmpty
+          ? referenceValidate = true
+          : referenceValidate = false;
+      idxCompany == null ? companyValidate = true : companyValidate = false;
+    });
+  }
+
   Widget makeInput({
     label,
     TextEditingController controllerText,
@@ -389,9 +456,6 @@ class _UpdateProductState extends State<UpdateProduct> {
                   borderSide: BorderSide(color: Colors.grey[400])),
             ),
           ),
-          SizedBox(
-            height: 30,
-          )
         ],
       ),
     );

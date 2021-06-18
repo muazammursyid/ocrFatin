@@ -27,7 +27,6 @@ class ComplainAPI {
                 );
               }).then((value) {
             Navigator.of(context).pop();
-            Navigator.of(context).pop();
           });
         } else {
           showDialog(

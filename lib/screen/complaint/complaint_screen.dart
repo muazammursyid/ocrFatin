@@ -19,6 +19,13 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
   final userTelefone = TextEditingController();
   final userEmail = TextEditingController();
 
+  bool validateProductName = false;
+  bool validateCompanyName = false;
+  bool validateComplaintProduct = false;
+  bool validateUsername = false;
+  bool validateTelephone = false;
+  bool validateUserEmail = false;
+
   bool loading = false;
 
   @override
@@ -43,8 +50,8 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                   child: Stack(
                     children: [
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
                             height: 80,
@@ -53,28 +60,62 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                               label: "Product Name",
                               controllerText: productNameText,
                               disable: false),
+                          validateProductName
+                              ? errorEmpty('Product Name can\'t be blank')
+                              : SizedBox(),
+                          SizedBox(
+                            height: 20,
+                          ),
                           makeInput(
                               label: "Company Name",
                               controllerText: companyNameText,
                               disable: false),
+                          validateCompanyName
+                              ? errorEmpty('Company Name can\'t be blank')
+                              : SizedBox(),
+                          SizedBox(
+                            height: 20,
+                          ),
                           makeInput(
                               label: "Complaint",
                               controllerText: complaintProductText,
                               disable: false),
+                          validateComplaintProduct
+                              ? errorEmpty('Complaint can\'t be blank')
+                              : SizedBox(),
+                          SizedBox(
+                            height: 20,
+                          ),
                           makeInput(
                               label: "Username",
                               controllerText: usernameText,
                               disable: true),
+                          validateUsername
+                              ? errorEmpty('Username can\'t be blank')
+                              : SizedBox(),
+                          SizedBox(
+                            height: 20,
+                          ),
                           makeInput(
                               label: "Number Telephone",
                               controllerText: userTelefone,
                               disable: false),
+                          validateTelephone
+                              ? errorEmpty('Number Telephone can\'t be blank')
+                              : SizedBox(),
+                          SizedBox(
+                            height: 20,
+                          ),
                           makeInput(
                               label: "User Email",
                               controllerText: userEmail,
                               disable: true),
+                          validateUserEmail
+                              ? errorEmpty(
+                                  'User Email Telephone can\'t be blank')
+                              : SizedBox(),
                           SizedBox(
-                            height: 20,
+                            height: 30,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 30, right: 40),
@@ -83,30 +124,8 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                               width: double.infinity,
                               child: RaisedButton(
                                 onPressed: () {
-                                  setState(() {
-                                    loading = true;
-                                  });
-                                  DateTime now = DateTime.now();
-                                  String createDate =
-                                      DateFormat('yyyy-MM-dd').format(now);
-                                  var jsons = {
-                                    "product_name": productNameText.text,
-                                    "company_name": companyNameText.text,
-                                    "complaint": companyNameText.text,
-                                    "user_name": usernameText.text,
-                                    "user_telephone": userTelefone.text,
-                                    "user_email": userEmail.text,
-                                    "create_by": userEmail.text,
-                                    "create_date": createDate,
-                                    "update_by": userEmail.text,
-                                    "update_date": createDate,
-                                  };
-                                  ComplainAPI.getInsertComplaint(jsons, context)
-                                      .then((value) {
-                                    setState(() {
-                                      loading = false;
-                                    });
-                                  });
+                                  checkValidation();
+                                  passValidation();
                                 },
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(80.0)),
@@ -168,6 +187,71 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
     );
   }
 
+  Padding errorEmpty(alert) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20),
+      child: Text(
+        alert,
+        style: TextStyle(color: Colors.redAccent),
+      ),
+    );
+  }
+
+  passValidation() {
+    if (!validateProductName &&
+        !validateCompanyName &&
+        !validateComplaintProduct &&
+        !validateUsername &&
+        !validateTelephone &&
+        !validateUserEmail) {
+      setState(() {
+        loading = true;
+      });
+      DateTime now = DateTime.now();
+      String createDate = DateFormat('yyyy-MM-dd').format(now);
+      var jsons = {
+        "product_name": productNameText.text,
+        "company_name": companyNameText.text,
+        "complaint": companyNameText.text,
+        "user_name": usernameText.text,
+        "user_telephone": userTelefone.text,
+        "user_email": userEmail.text,
+        "create_by": userEmail.text,
+        "create_date": createDate,
+        "update_by": userEmail.text,
+        "update_date": createDate,
+      };
+      ComplainAPI.getInsertComplaint(jsons, context).then((value) {
+        setState(() {
+          loading = false;
+        });
+      });
+    }
+  }
+
+  checkValidation() {
+    setState(() {
+      productNameText.text.isEmpty
+          ? validateProductName = true
+          : validateProductName = false;
+      companyNameText.text.isEmpty
+          ? validateCompanyName = true
+          : validateCompanyName = false;
+      complaintProductText.text.isEmpty
+          ? validateComplaintProduct = true
+          : validateComplaintProduct = false;
+      usernameText.text.isEmpty
+          ? validateUsername = true
+          : validateUsername = false;
+      userTelefone.text.isEmpty
+          ? validateTelephone = true
+          : validateTelephone = false;
+      userEmail.text.isEmpty
+          ? validateUserEmail = true
+          : validateUserEmail = false;
+    });
+  }
+
   Widget makeInput({
     label,
     TextEditingController controllerText,
@@ -209,9 +293,6 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                   borderSide: BorderSide(color: Colors.grey[400])),
             ),
           ),
-          SizedBox(
-            height: 30,
-          )
         ],
       ),
     );

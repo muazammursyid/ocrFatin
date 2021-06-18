@@ -24,7 +24,15 @@ class _AddProductState extends State<AddProduct> {
   List<Branded> listbranded = [];
   var idxBranded;
   String expiredForApi;
-  bool loading = false;
+  bool loading = true;
+
+  bool productNameValidate = false;
+  bool expiredDateValidate = false;
+  bool brandValidate = false;
+  bool referenceValidate = false;
+  bool companyValidate = false;
+  bool idxCompanyValidate = false;
+  bool idxBrandedValidate = false;
 
   @override
   void initState() {
@@ -33,6 +41,7 @@ class _AddProductState extends State<AddProduct> {
         setState(() {
           listCompany = value;
           listbranded = value2;
+          loading = false;
         });
       });
     });
@@ -101,6 +110,12 @@ class _AddProductState extends State<AddProduct> {
                         makeInput(
                             label: "Product Name",
                             controllerText: productNameText),
+                        productNameValidate
+                            ? errorEmpty('Product Name can\'t be blank')
+                            : SizedBox(),
+                        SizedBox(
+                          height: 30,
+                        ),
                         makeInput(
                             label: "Halal Status Expiry Date",
                             controllerText: expiredDateText,
@@ -117,6 +132,13 @@ class _AddProductState extends State<AddProduct> {
                                     DateFormat('yyyy-MM-dd').format(pickedDate);
                               });
                             }),
+                        expiredDateValidate
+                            ? errorEmpty(
+                                'Halal Status Expiry Date can\'t be blank')
+                            : SizedBox(),
+                        SizedBox(
+                          height: 30,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 20, right: 20, top: 2),
@@ -161,12 +183,21 @@ class _AddProductState extends State<AddProduct> {
                                 ),
                               ),
                             )),
+                        brandValidate
+                            ? errorEmpty('Brand can\'t be blank')
+                            : SizedBox(),
                         SizedBox(
                           height: 30,
                         ),
                         makeInput(
                             label: "Reference Number",
                             controllerText: referenceNumberText),
+                        referenceValidate
+                            ? errorEmpty('Reference Number can\'t be blank')
+                            : SizedBox(),
+                        SizedBox(
+                          height: 30,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 20, right: 20, top: 2),
@@ -211,6 +242,9 @@ class _AddProductState extends State<AddProduct> {
                                 ),
                               ),
                             )),
+                        companyValidate
+                            ? errorEmpty('Company Name can\'t be blank')
+                            : SizedBox(),
                         SizedBox(
                           height: 30,
                         ),
@@ -221,32 +255,8 @@ class _AddProductState extends State<AddProduct> {
                             height: 50,
                             child: RaisedButton(
                               onPressed: () {
-                                setState(() {
-                                  loading = true;
-                                });
-                                DateTime now = DateTime.now();
-                                String createDateNow =
-                                    DateFormat('yyyy-MM-dd').format(now);
-                                var jsons = {
-                                  "name": productNameText.text,
-                                  "no_ref": referenceNumberText.text,
-                                  "company_id": idxCompany,
-                                  "brand_id": idxBranded,
-                                  "expired_date": expiredForApi,
-                                  "create_by": widget.username,
-                                  "create_date": createDateNow,
-                                  "update_by": widget.username,
-                                  "update_date": createDateNow,
-                                  "imagebinary": "",
-                                  "filename": "",
-                                  "filetype": "",
-                                };
-                                AddProductAPI.getApiAddProduct(jsons, context)
-                                    .then((value) {
-                                  setState(() {
-                                    loading = false;
-                                  });
-                                });
+                                validationCheck();
+                                passValidation();
                               },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(80.0)),
@@ -307,6 +317,65 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
+  validationCheck() {
+    setState(() {
+      productNameText.text.isEmpty
+          ? productNameValidate = true
+          : productNameValidate = false;
+      expiredDateText.text.isEmpty
+          ? expiredDateValidate = true
+          : expiredDateValidate = false;
+      idxBranded == null ? brandValidate = true : brandValidate = false;
+      referenceNumberText.text.isEmpty
+          ? referenceValidate = true
+          : referenceValidate = false;
+      idxCompany == null ? companyValidate = true : companyValidate = false;
+    });
+  }
+
+  passValidation() {
+    if (!productNameValidate &&
+        !expiredDateValidate &&
+        !brandValidate &&
+        !referenceValidate &&
+        !companyValidate) {
+      setState(() {
+        loading = true;
+      });
+      DateTime now = DateTime.now();
+      String createDateNow = DateFormat('yyyy-MM-dd').format(now);
+      var jsons = {
+        "name": productNameText.text,
+        "no_ref": referenceNumberText.text,
+        "company_id": idxCompany,
+        "brand_id": idxBranded,
+        "expired_date": expiredForApi,
+        "create_by": widget.username,
+        "create_date": createDateNow,
+        "update_by": widget.username,
+        "update_date": createDateNow,
+        "imagebinary": "",
+        "filename": "",
+        "filetype": "",
+      };
+      AddProductAPI.getApiAddProduct(jsons, context).then((value) {
+        setState(() {
+          loading = false;
+        });
+      });
+    }
+  }
+
+  Padding errorEmpty(alert) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20),
+      child: Text(
+        alert,
+        style: TextStyle(color: Colors.redAccent),
+      ),
+    );
+  }
+
   Widget makeInput({
     label,
     TextEditingController controllerText,
@@ -347,9 +416,6 @@ class _AddProductState extends State<AddProduct> {
                   borderSide: BorderSide(color: Colors.grey[400])),
             ),
           ),
-          SizedBox(
-            height: 30,
-          )
         ],
       ),
     );

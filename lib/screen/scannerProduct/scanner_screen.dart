@@ -323,53 +323,53 @@ class _ScannerScreenState extends State<ScannerScreen> {
                           )
                         : SizedBox(),
                     SizedBox(height: 20),
-                    isImageLoaded
-                        ? loading
-                            ? Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : SizedBox(
-                                width: 200,
-                                height: 50,
-                                child: RaisedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      loading = true;
-                                    });
-                                    readTextFromanImage();
-                                  },
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(80.0)),
-                                  padding: const EdgeInsets.all(0.0),
-                                  child: Ink(
-                                    decoration: const BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: <Color>[
-                                          Colors.blue,
-                                          Colors.blue,
-                                          Colors.blueAccent
-                                        ],
-                                      ),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(80.0)),
-                                    ),
-                                    child: Container(
-                                      constraints: const BoxConstraints(
-                                          minWidth: 88.0,
-                                          minHeight:
-                                              36.0), // min sizes for Material buttons
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        'Not accurate? Scan Again',
-                                        style: TextStyle(color: Colors.white),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                        : SizedBox(),
+                    // isImageLoaded
+                    //     ? loading
+                    //         ? Center(
+                    //             child: CircularProgressIndicator(),
+                    //           )
+                    //         : SizedBox(
+                    //             width: 200,
+                    //             height: 50,
+                    //             child: RaisedButton(
+                    //               onPressed: () {
+                    //                 setState(() {
+                    //                   loading = true;
+                    //                 });
+                    //                 readTextFromanImage();
+                    //               },
+                    //               shape: RoundedRectangleBorder(
+                    //                   borderRadius:
+                    //                       BorderRadius.circular(80.0)),
+                    //               padding: const EdgeInsets.all(0.0),
+                    //               child: Ink(
+                    //                 decoration: const BoxDecoration(
+                    //                   gradient: LinearGradient(
+                    //                     colors: <Color>[
+                    //                       Colors.blue,
+                    //                       Colors.blue,
+                    //                       Colors.blueAccent
+                    //                     ],
+                    //                   ),
+                    //                   borderRadius: BorderRadius.all(
+                    //                       Radius.circular(80.0)),
+                    //                 ),
+                    //                 child: Container(
+                    //                   constraints: const BoxConstraints(
+                    //                       minWidth: 88.0,
+                    //                       minHeight:
+                    //                           36.0), // min sizes for Material buttons
+                    //                   alignment: Alignment.center,
+                    //                   child: const Text(
+                    //                     'Not accurate? Scan Again',
+                    //                     style: TextStyle(color: Colors.white),
+                    //                     textAlign: TextAlign.center,
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           )
+                    //     : SizedBox(),
                     SizedBox(height: 20),
                   ],
                 ),

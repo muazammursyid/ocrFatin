@@ -54,7 +54,7 @@ class HomeApi {
                     MaterialPageRoute(
                       builder: (context) => ComplaintScreen(),
                     ),
-                  );
+                  ).then((value) => Navigator.of(context).pop());
                 },
                 textCancel: 'Cancel',
                 functionCancel: () {
@@ -110,7 +110,7 @@ class HomeApi {
                     MaterialPageRoute(
                       builder: (context) => ComplaintScreen(),
                     ),
-                  );
+                  ).then((value) => Navigator.of(context).pop());
                 },
                 textCancel: 'Cancel',
                 functionCancel: () {

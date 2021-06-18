@@ -22,6 +22,13 @@ class _ComplaintUpdateState extends State<ComplaintUpdate> {
   final userEmail = TextEditingController();
   String createBy, createDate, updateBy, updateDate;
 
+  bool validateProductName = false;
+  bool validateCompanyName = false;
+  bool validateComplaintProduct = false;
+  bool validateUsername = false;
+  bool validateTelephone = false;
+  bool validateUserEmail = false;
+
   bool loading = false;
   @override
   void initState() {
@@ -52,8 +59,8 @@ class _ComplaintUpdateState extends State<ComplaintUpdate> {
                 child: Stack(
                   children: [
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
                           height: 80,
@@ -62,28 +69,61 @@ class _ComplaintUpdateState extends State<ComplaintUpdate> {
                             label: "Product Name",
                             controllerText: productNameText,
                             disable: false),
+                        validateProductName
+                            ? errorEmpty('Product Name can\'t be blank')
+                            : SizedBox(),
+                        SizedBox(
+                          height: 20,
+                        ),
                         makeInput(
                             label: "Company Name",
                             controllerText: companyNameText,
                             disable: false),
+                        validateCompanyName
+                            ? errorEmpty('Company Name can\'t be blank')
+                            : SizedBox(),
+                        SizedBox(
+                          height: 20,
+                        ),
                         makeInput(
                             label: "Complaint",
                             controllerText: complaintProductText,
                             disable: false),
+                        validateComplaintProduct
+                            ? errorEmpty('Complaint can\'t be blank')
+                            : SizedBox(),
+                        SizedBox(
+                          height: 20,
+                        ),
                         makeInput(
                             label: "Username",
                             controllerText: usernameText,
                             disable: true),
+                        validateUsername
+                            ? errorEmpty('Username can\'t be blank')
+                            : SizedBox(),
+                        SizedBox(
+                          height: 20,
+                        ),
                         makeInput(
                             label: "Number Telephone",
                             controllerText: userTelefone,
                             disable: false),
+                        validateTelephone
+                            ? errorEmpty('Number Telephone can\'t be blank')
+                            : SizedBox(),
+                        SizedBox(
+                          height: 20,
+                        ),
                         makeInput(
                             label: "User Email",
                             controllerText: userEmail,
                             disable: true),
+                        validateUserEmail
+                            ? errorEmpty('User Email Telephone can\'t be blank')
+                            : SizedBox(),
                         SizedBox(
-                          height: 20,
+                          height: 30,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 30, right: 40),
@@ -92,31 +132,8 @@ class _ComplaintUpdateState extends State<ComplaintUpdate> {
                             height: 50,
                             child: RaisedButton(
                               onPressed: () {
-                                setState(() {
-                                  loading = true;
-                                });
-                                DateTime now = DateTime.now();
-                                String updateDate =
-                                    DateFormat('yyyy-MM-dd').format(now);
-                                var jsons = {
-                                  "idx": widget.detailsComplaint.idx,
-                                  "product_name": productNameText.text,
-                                  "company_name": companyNameText.text,
-                                  "complaint": companyNameText.text,
-                                  "user_name": usernameText.text,
-                                  "user_telephone": userTelefone.text,
-                                  "user_email": userEmail.text,
-                                  "create_by": createBy,
-                                  "create_date": createDate,
-                                  "update_by": userEmail.text,
-                                  "update_date": updateDate,
-                                };
-                                ComplainAPI.getUpdateComplaint(jsons, context)
-                                    .then((value) {
-                                  setState(() {
-                                    loading = false;
-                                  });
-                                });
+                                checkValidation();
+                                passValidation();
                               },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(80.0)),
@@ -177,6 +194,72 @@ class _ComplaintUpdateState extends State<ComplaintUpdate> {
     );
   }
 
+  Padding errorEmpty(alert) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20),
+      child: Text(
+        alert,
+        style: TextStyle(color: Colors.redAccent),
+      ),
+    );
+  }
+
+  checkValidation() {
+    setState(() {
+      productNameText.text.isEmpty
+          ? validateProductName = true
+          : validateProductName = false;
+      companyNameText.text.isEmpty
+          ? validateCompanyName = true
+          : validateCompanyName = false;
+      complaintProductText.text.isEmpty
+          ? validateComplaintProduct = true
+          : validateComplaintProduct = false;
+      usernameText.text.isEmpty
+          ? validateUsername = true
+          : validateUsername = false;
+      userTelefone.text.isEmpty
+          ? validateTelephone = true
+          : validateTelephone = false;
+      userEmail.text.isEmpty
+          ? validateUserEmail = true
+          : validateUserEmail = false;
+    });
+  }
+
+  passValidation() {
+    if (!validateProductName &&
+        !validateCompanyName &&
+        !validateComplaintProduct &&
+        !validateUsername &&
+        !validateTelephone &&
+        !validateUserEmail) {
+      setState(() {
+        loading = true;
+      });
+      DateTime now = DateTime.now();
+      String updateDate = DateFormat('yyyy-MM-dd').format(now);
+      var jsons = {
+        "idx": widget.detailsComplaint.idx,
+        "product_name": productNameText.text,
+        "company_name": companyNameText.text,
+        "complaint": companyNameText.text,
+        "user_name": usernameText.text,
+        "user_telephone": userTelefone.text,
+        "user_email": userEmail.text,
+        "create_by": createBy,
+        "create_date": createDate,
+        "update_by": userEmail.text,
+        "update_date": updateDate,
+      };
+      ComplainAPI.getUpdateComplaint(jsons, context).then((value) {
+        setState(() {
+          loading = false;
+        });
+      });
+    }
+  }
+
   Widget makeInput({
     label,
     TextEditingController controllerText,
@@ -218,9 +301,6 @@ class _ComplaintUpdateState extends State<ComplaintUpdate> {
                   borderSide: BorderSide(color: Colors.grey[400])),
             ),
           ),
-          SizedBox(
-            height: 30,
-          )
         ],
       ),
     );
