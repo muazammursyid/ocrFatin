@@ -174,8 +174,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
             } else {
               //* klau tk jumpa no 2 tu dia trus ke sni
               setState(() {
-                comment.text =
-                    'We do not read properly. Please upload image with properly';
+                comment.text = 'Cannot read the image. Please upload again.';
               });
             }
           }
@@ -197,6 +196,14 @@ class _ScannerScreenState extends State<ScannerScreen> {
               fit: BoxFit.cover)),
       child: Scaffold(
         backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: Text(
+            'Halal Scanner',
+            style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.indigo[200],
+          iconTheme: IconThemeData(color: Colors.black),
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Stack(
@@ -298,9 +305,9 @@ class _ScannerScreenState extends State<ScannerScreen> {
                                 decoration: const BoxDecoration(
                                   gradient: LinearGradient(
                                     colors: <Color>[
-                                      Colors.green,
-                                      Colors.green,
-                                      Colors.greenAccent
+                                      Color(0xFF4CAF50),
+                                      Color(0xFF66BB6A),
+                                      Color(0xFF81C784)
                                     ],
                                   ),
                                   borderRadius:
@@ -373,11 +380,11 @@ class _ScannerScreenState extends State<ScannerScreen> {
                     SizedBox(height: 20),
                   ],
                 ),
-                Positioned(
-                  left: 5,
-                  top: 30,
-                  child: BackButton(),
-                ),
+                // Positioned(
+                //   left: 5,
+                //   top: 30,
+                //   child: BackButton(),
+                // ),
                 HeaderLogoHalal(),
               ],
             ),

@@ -50,6 +50,14 @@ class _ComplaintUpdateState extends State<ComplaintUpdate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.indigo[200],
+        title: Text(
+          'Update Complaint',
+          style: TextStyle(color: Colors.black),
+        ),
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
       body: loading
           ? Center(
               child: CircularProgressIndicator(),
@@ -63,7 +71,7 @@ class _ComplaintUpdateState extends State<ComplaintUpdate> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: 80,
+                          height: 30,
                         ),
                         makeInput(
                             label: "Product Name",
@@ -171,22 +179,22 @@ class _ComplaintUpdateState extends State<ComplaintUpdate> {
                         )
                       ],
                     ),
-                    Positioned(
-                      left: 5,
-                      top: 5,
-                      child: Row(
-                        children: [
-                          BackButton(),
-                          Text(
-                            'Update Complaint',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 18),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Positioned(
+                    //   left: 5,
+                    //   top: 5,
+                    //   child: Row(
+                    //     children: [
+                    //       BackButton(),
+                    //       Text(
+                    //         'Update Complaint',
+                    //         style: TextStyle(
+                    //             fontWeight: FontWeight.bold,
+                    //             color: Colors.black,
+                    //             fontSize: 18),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

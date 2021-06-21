@@ -45,6 +45,14 @@ class _AllProductState extends State<AllProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'List Of Product',
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.indigo[200],
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
       body: loading
           ? Center(child: CircularProgressIndicator())
           : SafeArea(
@@ -55,9 +63,6 @@ class _AllProductState extends State<AllProduct> {
                       padding: const EdgeInsets.all(20),
                       child: Column(
                         children: [
-                          SizedBox(
-                            height: 40,
-                          ),
                           Padding(
                             padding: const EdgeInsets.only(
                                 top: 8.0, left: 8.0, right: 8.0),
@@ -143,6 +148,7 @@ class _AllProductState extends State<AllProduct> {
                                               updateBy: item.updateBy,
                                               idx: item.idx,
                                               username: widget.username,
+                                              imageProduct: item.filename,
                                             ),
                                           ),
                                         ).then((value) => refreshApi());
@@ -311,6 +317,7 @@ class _AllProductState extends State<AllProduct> {
                                               updateBy: item.updateBy,
                                               idx: item.idx,
                                               username: widget.username,
+                                              imageProduct: item.filename,
                                             ),
                                           ),
                                         ).then((value) => refreshApi());
@@ -353,8 +360,12 @@ class _AllProductState extends State<AllProduct> {
                                                   height: 120,
                                                   decoration: new BoxDecoration(
                                                     image: new DecorationImage(
-                                                      image: AssetImage(
-                                                          'assets/images/noImage.jpeg'),
+                                                      image: item.filename != ""
+                                                          ? NetworkImage(
+                                                              'https://hayyshop.xyz/image/' +
+                                                                  item.filename)
+                                                          : AssetImage(
+                                                              'assets/images/noImage.jpeg'),
                                                       fit: BoxFit.cover,
                                                     ),
                                                     borderRadius:
@@ -458,22 +469,22 @@ class _AllProductState extends State<AllProduct> {
                         ],
                       ),
                     ),
-                    Positioned(
-                      left: 5,
-                      top: 5,
-                      child: Row(
-                        children: [
-                          BackButton(),
-                          Text(
-                            'List Of Product',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 18),
-                          ),
-                        ],
-                      ),
-                    )
+                    // Positioned(
+                    //   left: 5,
+                    //   top: 5,
+                    //   child: Row(
+                    //     children: [
+                    //       BackButton(),
+                    //       Text(
+                    //         'List Of Product',
+                    //         style: TextStyle(
+                    //             fontWeight: FontWeight.bold,
+                    //             color: Colors.black,
+                    //             fontSize: 18),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // )
                   ],
                 ),
               ),

@@ -3,6 +3,8 @@ import 'package:ocr_barcode_flutter/screen/complaint/complaint_update.dart';
 import 'package:ocr_barcode_flutter/screen/home/api/homeApi.dart';
 import 'package:ocr_barcode_flutter/screen/home/models/complaintData.dart';
 
+import 'complaint_screen.dart';
+
 class ComplaintView extends StatefulWidget {
   List<DatumComplaint> listComplaint = [];
   final String myEmail;
@@ -35,6 +37,30 @@ class _ComplaintViewState extends State<ComplaintView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.indigo[200],
+        title: Text(
+          'My Complaint',
+          style: TextStyle(color: Colors.black),
+        ),
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ComplaintScreen(),
+            ),
+          ).then((value) {
+            refreshList();
+          });
+        },
+        child: Icon(
+          Icons.add,
+        ),
+      ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Stack(
@@ -43,9 +69,6 @@ class _ComplaintViewState extends State<ComplaintView> {
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 60,
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,26 +164,29 @@ class _ComplaintViewState extends State<ComplaintView> {
                           ),
                         );
                       }).toList(),
+                    ),
+                    SizedBox(
+                      height: 50,
                     )
                   ],
                 ),
               ),
-              Positioned(
-                left: 5,
-                top: 5,
-                child: Row(
-                  children: [
-                    BackButton(),
-                    Text(
-                      'My Complaint',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 18),
-                    ),
-                  ],
-                ),
-              )
+              // Positioned(
+              //   left: 5,
+              //   top: 5,
+              //   child: Row(
+              //     children: [
+              //       BackButton(),
+              //       Text(
+              //         'My Complaint',
+              //         style: TextStyle(
+              //             fontWeight: FontWeight.bold,
+              //             color: Colors.black,
+              //             fontSize: 18),
+              //       ),
+              //     ],
+              //   ),
+              // )
             ],
           ),
         ),

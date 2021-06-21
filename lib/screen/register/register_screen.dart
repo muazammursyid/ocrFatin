@@ -33,6 +33,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
               image: AssetImage("assets/images/background8.png"),
               fit: BoxFit.cover)),
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Register',
+            style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.indigo[200],
+          iconTheme: IconThemeData(color: Colors.black),
+        ),
         backgroundColor: Colors.transparent,
         body: loading
             ? Center(child: CircularProgressIndicator())
@@ -185,11 +193,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ],
                       ),
-                      Positioned(
-                        left: 5,
-                        top: 5,
-                        child: BackButton(),
-                      ),
+                      // Positioned(
+                      //   left: 5,
+                      //   top: 5,
+                      //   child: BackButton(),
+                      // ),
                       HeaderLogoHalal(),
                     ],
                   ),

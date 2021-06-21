@@ -11,6 +11,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
+  bool userNameValidate = false;
+  bool passwordValidate = false;
   bool loading = false;
   @override
   Widget build(BuildContext context) {
@@ -30,18 +32,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           HeaderLogo(),
                           SizedBox(
                             height: 70.0,
                           ),
-                          Text(
-                            'LOGIN',
-                            style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25),
+                          Align(
+                            child: Text(
+                              'LOGIN',
+                              style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25),
+                            ),
                           ),
                           SizedBox(
                             height: 30.0,
@@ -59,6 +63,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
+                          userNameValidate
+                              ? Padding(
+                                  padding: const EdgeInsets.only(left: 30),
+                                  child: Text(
+                                    'Username can\'t be blank',
+                                    style: TextStyle(color: Colors.redAccent),
+                                  ),
+                                )
+                              : SizedBox(),
                           Padding(
                             padding: const EdgeInsets.all(15),
                             child: TextField(
@@ -73,6 +86,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
+                          passwordValidate
+                              ? Padding(
+                                  padding: const EdgeInsets.only(left: 30),
+                                  child: Text(
+                                    'Password can\'t be blank',
+                                    style: TextStyle(color: Colors.redAccent),
+                                  ),
+                                )
+                              : SizedBox(),
                           SizedBox(
                             height: 15, //adjust kt sni
                           ),
@@ -83,19 +105,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               height: 50,
                               child: RaisedButton(
                                 onPressed: () {
-                                  setState(() {
-                                    loading = true;
-                                  });
-                                  var jsons = {
-                                    "user": userNameController.text,
-                                    "pass": passwordController.text
-                                  };
-                                  LoginAPI.loginApi(jsons, context)
-                                      .then((value) {
-                                    setState(() {
-                                      loading = false;
-                                    });
-                                  });
+                                  checkValidation();
+                                  passValidation();
                                 },
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(80.0)),
@@ -185,5 +196,33 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
       ),
     );
+  }
+
+  checkValidation() {
+    setState(() {
+      userNameController.text.isEmpty
+          ? userNameValidate = true
+          : userNameValidate = false;
+      passwordController.text.isEmpty
+          ? passwordValidate = true
+          : passwordValidate = false;
+    });
+  }
+
+  passValidation() {
+    if (!userNameValidate && !passwordValidate) {
+      setState(() {
+        loading = true;
+      });
+      var jsons = {
+        "user": userNameController.text,
+        "pass": passwordController.text
+      };
+      LoginAPI.loginApi(jsons, context).then((value) {
+        setState(() {
+          loading = false;
+        });
+      });
+    }
   }
 }

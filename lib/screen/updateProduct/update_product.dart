@@ -19,6 +19,7 @@ class UpdateProduct extends StatefulWidget {
   final String updateDate;
   final String idx;
   final String username;
+  final String imageProduct;
   UpdateProduct({
     this.productNAme,
     this.expiredDate,
@@ -33,6 +34,7 @@ class UpdateProduct extends StatefulWidget {
     this.updateDate,
     this.idx,
     this.username,
+    this.imageProduct,
   });
 
   @override
@@ -90,6 +92,14 @@ class _UpdateProductState extends State<UpdateProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Update Product',
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.indigo[200],
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
       body: loading
           ? Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
@@ -101,7 +111,7 @@ class _UpdateProductState extends State<UpdateProduct> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: 80,
+                          height: 30,
                         ),
                         Center(
                           child: Stack(
@@ -112,8 +122,12 @@ class _UpdateProductState extends State<UpdateProduct> {
                                 decoration: new BoxDecoration(
                                   color: const Color(0xff7c94b6),
                                   image: new DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/noImage.jpeg'),
+                                    image: widget.imageProduct != ""
+                                        ? NetworkImage(
+                                            'https://hayyshop.xyz/image/' +
+                                                widget.imageProduct)
+                                        : AssetImage(
+                                            'assets/images/noImage.jpeg'),
                                     fit: BoxFit.cover,
                                   ),
                                   borderRadius: new BorderRadius.all(
@@ -335,22 +349,22 @@ class _UpdateProductState extends State<UpdateProduct> {
                         ),
                       ],
                     ),
-                    Positioned(
-                      left: 5,
-                      top: 5,
-                      child: Row(
-                        children: [
-                          BackButton(),
-                          Text(
-                            'Add Product',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 18),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Positioned(
+                    //   left: 5,
+                    //   top: 5,
+                    //   child: Row(
+                    //     children: [
+                    //       BackButton(),
+                    //       Text(
+                    //         'Add Product',
+                    //         style: TextStyle(
+                    //             fontWeight: FontWeight.bold,
+                    //             color: Colors.black,
+                    //             fontSize: 18),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

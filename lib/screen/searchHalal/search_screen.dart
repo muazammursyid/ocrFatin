@@ -31,6 +31,14 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Container(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.indigo[200],
+          title: Text(
+            'Details Of Product',
+            style: TextStyle(color: Colors.black),
+          ),
+          iconTheme: IconThemeData(color: Colors.black),
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Stack(
@@ -40,7 +48,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height: 80,
+                      height: 20,
                     ),
                     Center(
                       child: Container(
@@ -135,22 +143,22 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   ],
                 ),
-                Positioned(
-                  left: 5,
-                  top: 5,
-                  child: Row(
-                    children: [
-                      BackButton(),
-                      Text(
-                        'Details Of Product',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontSize: 18),
-                      ),
-                    ],
-                  ),
-                )
+                // Positioned(
+                //   left: 5,
+                //   top: 5,
+                //   child: Row(
+                //     children: [
+                //       BackButton(),
+                //       Text(
+                //         'Details Of Product',
+                //         style: TextStyle(
+                //             fontWeight: FontWeight.bold,
+                //             color: Colors.black,
+                //             fontSize: 18),
+                //       ),
+                //     ],
+                //   ),
+                // )
               ],
             ),
           ),

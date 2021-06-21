@@ -29,6 +29,14 @@ class _AllComplaintState extends State<AllComplaint> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'All Complaint',
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.indigo[200],
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
       body: loading
           ? Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
@@ -39,9 +47,6 @@ class _AllComplaintState extends State<AllComplaint> {
                       padding: const EdgeInsets.all(20),
                       child: Column(
                         children: [
-                          SizedBox(
-                            height: 60,
-                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,22 +142,22 @@ class _AllComplaintState extends State<AllComplaint> {
                         ],
                       ),
                     ),
-                    Positioned(
-                      left: 5,
-                      top: 5,
-                      child: Row(
-                        children: [
-                          BackButton(),
-                          Text(
-                            'My Complaint',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 18),
-                          ),
-                        ],
-                      ),
-                    )
+                    // Positioned(
+                    //   left: 5,
+                    //   top: 5,
+                    //   child: Row(
+                    //     children: [
+                    //       BackButton(),
+                    //       Text(
+                    //         'My Complaint',
+                    //         style: TextStyle(
+                    //             fontWeight: FontWeight.bold,
+                    //             color: Colors.black,
+                    //             fontSize: 18),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // )
                   ],
                 ),
               ),

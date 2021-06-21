@@ -41,6 +41,14 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
   Widget build(BuildContext context) {
     return Container(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Complaint Product',
+            style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.indigo[200],
+          iconTheme: IconThemeData(color: Colors.black),
+        ),
         body: loading
             ? Center(
                 child: CircularProgressIndicator(),
@@ -54,7 +62,7 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            height: 80,
+                            height: 30,
                           ),
                           makeInput(
                               label: "Product Name",
@@ -163,22 +171,22 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                           )
                         ],
                       ),
-                      Positioned(
-                        left: 5,
-                        top: 5,
-                        child: Row(
-                          children: [
-                            BackButton(),
-                            Text(
-                              'Complaint Product',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  fontSize: 18),
-                            ),
-                          ],
-                        ),
-                      )
+                      // Positioned(
+                      //   left: 5,
+                      //   top: 5,
+                      //   child: Row(
+                      //     children: [
+                      //       BackButton(),
+                      //       Text(
+                      //         'Complaint Product',
+                      //         style: TextStyle(
+                      //             fontWeight: FontWeight.bold,
+                      //             color: Colors.black,
+                      //             fontSize: 18),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // )
                     ],
                   ),
                 ),

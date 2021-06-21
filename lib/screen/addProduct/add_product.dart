@@ -51,6 +51,14 @@ class _AddProductState extends State<AddProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Add Product',
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.indigo[200],
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
       body: loading
           ? Center(
               child: CircularProgressIndicator(),
@@ -64,7 +72,7 @@ class _AddProductState extends State<AddProduct> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: 80,
+                          height: 30,
                         ),
                         Center(
                           child: Stack(
@@ -294,22 +302,22 @@ class _AddProductState extends State<AddProduct> {
                         ),
                       ],
                     ),
-                    Positioned(
-                      left: 5,
-                      top: 5,
-                      child: Row(
-                        children: [
-                          BackButton(),
-                          Text(
-                            'Add Product',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 18),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Positioned(
+                    //   left: 5,
+                    //   top: 5,
+                    //   child: Row(
+                    //     children: [
+                    //       BackButton(),
+                    //       Text(
+                    //         'Add Product',
+                    //         style: TextStyle(
+                    //             fontWeight: FontWeight.bold,
+                    //             color: Colors.black,
+                    //             fontSize: 18),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
