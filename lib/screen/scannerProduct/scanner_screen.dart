@@ -41,9 +41,6 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 GestureDetector(
                   child: Text("Choose from gallery"),
                   onTap: () {
-                    setState(() {
-                      comment.text = "";
-                    });
                     _openGallery(context);
                   },
                 ),
@@ -54,9 +51,6 @@ class _ScannerScreenState extends State<ScannerScreen> {
                 GestureDetector(
                   child: Text("Take photo"),
                   onTap: () {
-                    setState(() {
-                      comment.text = "";
-                    });
                     _openCamera(context);
                   },
                 )
@@ -72,8 +66,13 @@ class _ScannerScreenState extends State<ScannerScreen> {
     var pitcure =
         await picker.getImage(source: ImageSource.camera, imageQuality: 50);
     if (pitcure != null) {
+      setState(() {
+        comment.text = "";
+        loading = true;
+      });
       File imageCrop = await ImageCropper.cropImage(
         sourcePath: pitcure.path,
+        compressQuality: 100,
         aspectRatioPresets: [
           CropAspectRatioPreset.square,
           // CropAspectRatioPreset.ratio3x2,
@@ -101,6 +100,10 @@ class _ScannerScreenState extends State<ScannerScreen> {
           });
         } else {}
       }
+    } else {
+      setState(() {
+        loading = false;
+      });
     }
     Navigator.of(context).pop();
   }
@@ -109,6 +112,10 @@ class _ScannerScreenState extends State<ScannerScreen> {
     var pitcure =
         await picker.getImage(source: ImageSource.gallery, maxWidth: 600);
     if (pitcure != null) {
+      setState(() {
+        comment.text = "";
+        loading = true;
+      });
       File imageCrop = await ImageCropper.cropImage(
           sourcePath: pitcure.path,
           aspectRatioPresets: [
@@ -131,12 +138,17 @@ class _ScannerScreenState extends State<ScannerScreen> {
         if (imageCrop != null) {
           this.setState(() {
             imageFile = imageCrop;
+
             Timer(Duration(seconds: 10), () {
               readTextFromanImage();
             });
           });
         } else {}
       }
+    } else {
+      setState(() {
+        loading = false;
+      });
     }
     Navigator.of(context).pop();
   }
@@ -150,7 +162,6 @@ class _ScannerScreenState extends State<ScannerScreen> {
     for (TextBlock block in readText.blocks) {
       for (TextLine line in block.lines) {
         for (TextElement word in line.elements) {
-          loading = false;
           print(word.text.length);
           print(word.text.contains('MS'));
           //* kalau jumpa ms auto tknk buat proses
@@ -163,18 +174,21 @@ class _ScannerScreenState extends State<ScannerScreen> {
               setState(() {
                 result = word.text;
                 comment.text = result;
+                loading = false;
               });
               break;
             } else if (word.text.length == 12) {
               setState(() {
                 result = word.text;
                 comment.text = result.substring(1);
+                loading = false;
               });
               break;
             } else {
               //* klau tk jumpa no 2 tu dia trus ke sni
               setState(() {
                 comment.text = 'Cannot read the image. Please upload again.';
+                loading = false;
               });
             }
           }
@@ -204,192 +218,230 @@ class _ScannerScreenState extends State<ScannerScreen> {
           backgroundColor: Colors.indigo[200],
           iconTheme: IconThemeData(color: Colors.black),
         ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Stack(
-              children: [
-                Column(
-                  children: [
-                    HeaderLogo(),
-                    SizedBox(
-                      height: 70,
-                    ),
-                    isImageLoaded
-                        ? Center(
-                            child: Container(
-                              height: 250.0,
-                              width: 250.0,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: FileImage(imageFile),
-                                  onError: (exception, stackTrace) {
-                                    return SizedBox();
-                                  },
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    !isImageLoaded && imageFile != null
-                        ? Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : SizedBox(),
-                    isImageLoaded
-                        ? Padding(
-                            padding: const EdgeInsets.only(
-                                top: 16, left: 32, right: 32),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(5),
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                      color: Colors.grey.withOpacity(0.8),
-                                      offset: const Offset(4, 4),
-                                      blurRadius: 8),
-                                ],
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
-                                child: Container(
-                                  padding: const EdgeInsets.all(4.0),
-                                  constraints: const BoxConstraints(
-                                      minHeight: 160, maxHeight: 160),
-                                  color: Colors.white,
-                                  child: SingleChildScrollView(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, right: 10, top: 0, bottom: 0),
-                                    child: TextField(
-                                      controller: comment,
-                                      maxLines: null,
-                                      onChanged: (String txt) {},
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.blueGrey,
+        body: loading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : SafeArea(
+                child: SingleChildScrollView(
+                  child: Stack(
+                    children: [
+                      Column(
+                        children: [
+                          HeaderLogo(),
+                          SizedBox(
+                            height: 70,
+                          ),
+                          !isImageLoaded
+                              ? Text(
+                                  'Example image :',
+                                  style: TextStyle(color: Colors.redAccent),
+                                )
+                              : SizedBox(),
+                          SizedBox(height: 10),
+                          isImageLoaded
+                              ? Center(
+                                  child: Container(
+                                    height: 250.0,
+                                    width: 250.0,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: FileImage(imageFile),
+                                        onError: (exception, stackTrace) {
+                                          return SizedBox();
+                                        },
+                                        fit: BoxFit.cover,
                                       ),
-                                      cursorColor: Colors.blue,
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: '',
-                                        focusedBorder: InputBorder.none,
-                                        enabledBorder: InputBorder.none,
-                                        errorBorder: InputBorder.none,
-                                        disabledBorder: InputBorder.none,
+                                    ),
+                                  ),
+                                )
+                              : Center(
+                                  child: Container(
+                                    height: 250.0,
+                                    width: 250.0,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                            'assets/images/contoh.jpg'),
+                                        onError: (exception, stackTrace) {
+                                          return SizedBox();
+                                        },
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          )
-                        : SizedBox(),
-                    SizedBox(height: 20),
-                    isImageLoaded
-                        ? SizedBox(
-                            width: 150,
-                            height: 50,
-                            child: RaisedButton(
-                              onPressed: () {
-                                HomeApi.getSearchByProductFromScanner(
-                                    comment.text, context);
-                              },
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(80.0)),
-                              padding: const EdgeInsets.all(0.0),
-                              child: Ink(
-                                decoration: const BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: <Color>[
-                                      Color(0xFF4CAF50),
-                                      Color(0xFF66BB6A),
-                                      Color(0xFF81C784)
-                                    ],
+                          SizedBox(
+                            height: 20,
+                          ),
+                          !isImageLoaded && imageFile != null
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : SizedBox(),
+                          isImageLoaded
+                              ? Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 16, left: 32, right: 32),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(5),
+                                      boxShadow: <BoxShadow>[
+                                        BoxShadow(
+                                            color: Colors.grey.withOpacity(0.8),
+                                            offset: const Offset(4, 4),
+                                            blurRadius: 8),
+                                      ],
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(5),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(4.0),
+                                        constraints: const BoxConstraints(
+                                            minHeight: 160, maxHeight: 160),
+                                        color: Colors.white,
+                                        child: SingleChildScrollView(
+                                          padding: const EdgeInsets.only(
+                                              left: 10,
+                                              right: 10,
+                                              top: 0,
+                                              bottom: 0),
+                                          child: TextField(
+                                            controller: comment,
+                                            maxLines: null,
+                                            onChanged: (String txt) {},
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.blueGrey,
+                                            ),
+                                            cursorColor: Colors.blue,
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: '',
+                                              focusedBorder: InputBorder.none,
+                                              enabledBorder: InputBorder.none,
+                                              errorBorder: InputBorder.none,
+                                              disabledBorder: InputBorder.none,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(80.0)),
-                                ),
-                                child: Container(
-                                  constraints: const BoxConstraints(
-                                      minWidth: 88.0,
-                                      minHeight:
-                                          36.0), // min sizes for Material buttons
-                                  alignment: Alignment.center,
-                                  child: const Text(
-                                    'Search Product',
-                                    style: TextStyle(color: Colors.white),
-                                    textAlign: TextAlign.center,
+                                )
+                              : SizedBox(),
+                          SizedBox(height: 20),
+                          isImageLoaded
+                              ? SizedBox(
+                                  width: 150,
+                                  height: 50,
+                                  child: RaisedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        loading = true;
+                                      });
+                                      HomeApi.getSearchByProductFromScanner(
+                                              comment.text, context)
+                                          .then((value) {
+                                        setState(() {
+                                          loading = false;
+                                        });
+                                      });
+                                    },
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(80.0)),
+                                    padding: const EdgeInsets.all(0.0),
+                                    child: Ink(
+                                      decoration: const BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: <Color>[
+                                            Color(0xFF4CAF50),
+                                            Color(0xFF66BB6A),
+                                            Color(0xFF81C784)
+                                          ],
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(80.0)),
+                                      ),
+                                      child: Container(
+                                        constraints: const BoxConstraints(
+                                            minWidth: 88.0,
+                                            minHeight:
+                                                36.0), // min sizes for Material buttons
+                                        alignment: Alignment.center,
+                                        child: const Text(
+                                          'Search Product',
+                                          style: TextStyle(color: Colors.white),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ),
-                          )
-                        : SizedBox(),
-                    SizedBox(height: 20),
-                    // isImageLoaded
-                    //     ? loading
-                    //         ? Center(
-                    //             child: CircularProgressIndicator(),
-                    //           )
-                    //         : SizedBox(
-                    //             width: 200,
-                    //             height: 50,
-                    //             child: RaisedButton(
-                    //               onPressed: () {
-                    //                 setState(() {
-                    //                   loading = true;
-                    //                 });
-                    //                 readTextFromanImage();
-                    //               },
-                    //               shape: RoundedRectangleBorder(
-                    //                   borderRadius:
-                    //                       BorderRadius.circular(80.0)),
-                    //               padding: const EdgeInsets.all(0.0),
-                    //               child: Ink(
-                    //                 decoration: const BoxDecoration(
-                    //                   gradient: LinearGradient(
-                    //                     colors: <Color>[
-                    //                       Colors.blue,
-                    //                       Colors.blue,
-                    //                       Colors.blueAccent
-                    //                     ],
-                    //                   ),
-                    //                   borderRadius: BorderRadius.all(
-                    //                       Radius.circular(80.0)),
-                    //                 ),
-                    //                 child: Container(
-                    //                   constraints: const BoxConstraints(
-                    //                       minWidth: 88.0,
-                    //                       minHeight:
-                    //                           36.0), // min sizes for Material buttons
-                    //                   alignment: Alignment.center,
-                    //                   child: const Text(
-                    //                     'Not accurate? Scan Again',
-                    //                     style: TextStyle(color: Colors.white),
-                    //                     textAlign: TextAlign.center,
-                    //                   ),
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //           )
-                    //     : SizedBox(),
-                    SizedBox(height: 20),
-                  ],
+                                )
+                              : SizedBox(),
+                          SizedBox(height: 20),
+                          // isImageLoaded
+                          //     ? loading
+                          //         ? Center(
+                          //             child: CircularProgressIndicator(),
+                          //           )
+                          //         : SizedBox(
+                          //             width: 200,
+                          //             height: 50,
+                          //             child: RaisedButton(
+                          //               onPressed: () {
+                          //                 setState(() {
+                          //                   loading = true;
+                          //                 });
+                          //                 readTextFromanImage();
+                          //               },
+                          //               shape: RoundedRectangleBorder(
+                          //                   borderRadius:
+                          //                       BorderRadius.circular(80.0)),
+                          //               padding: const EdgeInsets.all(0.0),
+                          //               child: Ink(
+                          //                 decoration: const BoxDecoration(
+                          //                   gradient: LinearGradient(
+                          //                     colors: <Color>[
+                          //                       Colors.blue,
+                          //                       Colors.blue,
+                          //                       Colors.blueAccent
+                          //                     ],
+                          //                   ),
+                          //                   borderRadius: BorderRadius.all(
+                          //                       Radius.circular(80.0)),
+                          //                 ),
+                          //                 child: Container(
+                          //                   constraints: const BoxConstraints(
+                          //                       minWidth: 88.0,
+                          //                       minHeight:
+                          //                           36.0), // min sizes for Material buttons
+                          //                   alignment: Alignment.center,
+                          //                   child: const Text(
+                          //                     'Not accurate? Scan Again',
+                          //                     style: TextStyle(color: Colors.white),
+                          //                     textAlign: TextAlign.center,
+                          //                   ),
+                          //                 ),
+                          //               ),
+                          //             ),
+                          //           )
+                          //     : SizedBox(),
+                          SizedBox(height: 20),
+                        ],
+                      ),
+                      // Positioned(
+                      //   left: 5,
+                      //   top: 30,
+                      //   child: BackButton(),
+                      // ),
+                      HeaderLogoHalal(),
+                    ],
+                  ),
                 ),
-                // Positioned(
-                //   left: 5,
-                //   top: 30,
-                //   child: BackButton(),
-                // ),
-                HeaderLogoHalal(),
-              ],
-            ),
-          ),
-        ),
+              ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.green,
           onPressed: () => _showChoiceDialog(context),

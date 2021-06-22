@@ -361,8 +361,7 @@ class _HomePageState extends State<HomePage> {
                         controller: searchText,
                         textInputAction: TextInputAction.search,
                         decoration: InputDecoration(
-                          hintText:
-                              "Search product by brand, company, name & id",
+                          hintText: "",
                           border: InputBorder.none,
                           contentPadding:
                               EdgeInsets.only(left: 15.0, top: 15.0),
@@ -377,7 +376,17 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   SizedBox(
-                    height: 30.0,
+                    height: 15.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    child: Text(
+                      'Note : Search product by brand, company, name & id',
+                      style: TextStyle(color: Colors.redAccent),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15.0,
                   ),
                   InkWell(
                     onTap: () {

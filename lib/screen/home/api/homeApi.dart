@@ -13,9 +13,9 @@ class HomeApi {
   static Future<List<ProductData>> getSearchByProduct(text, context,
       [isFromSearch = false]) async {
     try {
-      var jsons = {};
-      var result = await GetAPI.providersGET(
-          jsons, 'Product/getallproductwithlookup/$text');
+      var jsons = {"keyword": text};
+      var result = await GetAPI.addProductProvider(
+          jsons, 'Product/getallproductwithlookup2');
       var response = result[1];
       var statusCode = result[0];
       print(response);
@@ -63,10 +63,14 @@ class HomeApi {
               );
             },
           );
+          return [];
         }
-      } else {}
+      } else {
+        return [];
+      }
     } catch (e) {
       print(e);
+      return [];
     }
   }
 
