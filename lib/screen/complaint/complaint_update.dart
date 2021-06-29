@@ -251,7 +251,7 @@ class _ComplaintUpdateState extends State<ComplaintUpdate> {
         "idx": widget.detailsComplaint.idx,
         "product_name": productNameText.text,
         "company_name": companyNameText.text,
-        "complaint": companyNameText.text,
+        "complaint": complaintProductText.text,
         "user_name": usernameText.text,
         "user_telephone": userTelefone.text,
         "user_email": userEmail.text,
