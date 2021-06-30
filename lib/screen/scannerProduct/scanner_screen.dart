@@ -308,6 +308,8 @@ class _ScannerScreenState extends State<ScannerScreen> {
                                               top: 0,
                                               bottom: 0),
                                           child: TextField(
+                                            readOnly: true,
+                                            enableInteractiveSelection: true,
                                             controller: comment,
                                             maxLines: null,
                                             onChanged: (String txt) {},

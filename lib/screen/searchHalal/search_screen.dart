@@ -59,10 +59,9 @@ class _SearchScreenState extends State<SearchScreen> {
                         decoration: new BoxDecoration(
                           color: const Color(0xff7c94b6),
                           image: new DecorationImage(
-                           image: widget.imageProduct != null
-                                              ? MemoryImage(widget.imageProduct)
-                                              : AssetImage(
-                                                  'assets/images/noImage.jpeg'),
+                            image: widget.imageProduct != null
+                                ? MemoryImage(widget.imageProduct)
+                                : AssetImage('assets/images/noImage.jpeg'),
                             fit: BoxFit.cover,
                           ),
                           borderRadius:
