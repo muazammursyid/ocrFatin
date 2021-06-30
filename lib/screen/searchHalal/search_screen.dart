@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:ocr_barcode_flutter/screen/complaint/complaint_screen.dart';
 import 'package:ocr_barcode_flutter/screen/home/models/searchByProduct.dart';
@@ -8,7 +10,7 @@ class SearchScreen extends StatefulWidget {
   final String brandName;
   final String refNumber;
   final String companyName;
-  final String imageProduct;
+  final Uint8List imageProduct;
   SearchScreen({
     this.productName,
     this.expiredDate,
@@ -57,10 +59,10 @@ class _SearchScreenState extends State<SearchScreen> {
                         decoration: new BoxDecoration(
                           color: const Color(0xff7c94b6),
                           image: new DecorationImage(
-                            image: widget.imageProduct != ""
-                                ? NetworkImage('https://hayyshop.xyz/image/' +
-                                    widget.imageProduct)
-                                : AssetImage('assets/images/noImage.jpeg'),
+                           image: widget.imageProduct != null
+                                              ? MemoryImage(widget.imageProduct)
+                                              : AssetImage(
+                                                  'assets/images/noImage.jpeg'),
                             fit: BoxFit.cover,
                           ),
                           borderRadius:

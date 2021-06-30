@@ -1,4 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:ocr_barcode_flutter/screen/addProduct/api/addProductAPI.dart';
 import 'package:ocr_barcode_flutter/screen/addProduct/model/allBrandedmodel.dart';
@@ -19,7 +25,7 @@ class UpdateProduct extends StatefulWidget {
   final String updateDate;
   final String idx;
   final String username;
-  final String imageProduct;
+  final Uint8List imageProduct;
   UpdateProduct({
     this.productNAme,
     this.expiredDate,
@@ -63,6 +69,9 @@ class _UpdateProductState extends State<UpdateProduct> {
   bool idxCompanyValidate = false;
   bool idxBrandedValidate = false;
 
+  final picker = ImagePicker();
+  File imageFile;
+
   @override
   void initState() {
     super.initState();
@@ -87,6 +96,112 @@ class _UpdateProductState extends State<UpdateProduct> {
         });
       });
     });
+  }
+
+  _openGallery(BuildContext context) async {
+    var pitcure =
+        await picker.getImage(source: ImageSource.gallery, maxWidth: 600);
+    if (pitcure != null) {
+      File imageCrop = await ImageCropper.cropImage(
+          sourcePath: pitcure.path,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.square,
+            // CropAspectRatioPreset.ratio3x2,
+            // CropAspectRatioPreset.original,
+            // CropAspectRatioPreset.ratio4x3,
+            // CropAspectRatioPreset.ratio16x9
+          ],
+          androidUiSettings: AndroidUiSettings(
+              toolbarTitle: 'Cropper',
+              toolbarColor: Colors.deepOrange,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.square,
+              lockAspectRatio: true),
+          iosUiSettings: IOSUiSettings(
+            minimumAspectRatio: 1.0,
+          ));
+      if (mounted) {
+        if (imageCrop != null) {
+          this.setState(() {
+            imageFile = imageCrop;
+          });
+        } else {}
+      }
+    }
+    Navigator.of(context).pop();
+  }
+
+  _openCamera(BuildContext context) async {
+    var pitcure =
+        await picker.getImage(source: ImageSource.camera, imageQuality: 50);
+    if (pitcure != null) {
+      File imageCrop = await ImageCropper.cropImage(
+        sourcePath: pitcure.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          // CropAspectRatioPreset.ratio3x2,
+          // CropAspectRatioPreset.original,
+          // CropAspectRatioPreset.ratio4x3,
+          // CropAspectRatioPreset.ratio16x9
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+        ),
+      );
+      if (mounted) {
+        if (imageCrop != null) {
+          this.setState(() {
+            imageFile = imageCrop;
+          });
+        } else {}
+      }
+    }
+    Navigator.of(context).pop();
+  }
+
+  Future<void> _showChoiceDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          ),
+          title: Text(
+            "Add Image",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                GestureDetector(
+                  child: Text("Choose from gallery"),
+                  onTap: () {
+                    _openGallery(context);
+                  },
+                ),
+                Divider(),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                ),
+                GestureDetector(
+                  child: Text("Take photo"),
+                  onTap: () {
+                    _openCamera(context);
+                  },
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -116,28 +231,44 @@ class _UpdateProductState extends State<UpdateProduct> {
                         Center(
                           child: Stack(
                             children: [
-                              Container(
-                                width: 200.0,
-                                height: 200.0,
-                                decoration: new BoxDecoration(
-                                  color: const Color(0xff7c94b6),
-                                  image: new DecorationImage(
-                                    image: widget.imageProduct != ""
-                                        ? NetworkImage(
-                                            'https://hayyshop.xyz/image/' +
-                                                widget.imageProduct)
-                                        : AssetImage(
-                                            'assets/images/noImage.jpeg'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  borderRadius: new BorderRadius.all(
-                                      new Radius.circular(15.0)),
-                                  border: new Border.all(
-                                    color: Colors.blue,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              ),
+                              imageFile == null
+                                  ? Container(
+                                      width: 200.0,
+                                      height: 200.0,
+                                      decoration: new BoxDecoration(
+                                        color: const Color(0xff7c94b6),
+                                        image: new DecorationImage(
+                                          image: widget.imageProduct != null
+                                              ? MemoryImage(widget.imageProduct)
+                                              : AssetImage(
+                                                  'assets/images/noImage.jpeg'),
+                                          fit: BoxFit.cover,
+                                        ),
+                                        borderRadius: new BorderRadius.all(
+                                            new Radius.circular(15.0)),
+                                        border: new Border.all(
+                                          color: Colors.blue,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                    )
+                                  : Container(
+                                      width: 200.0,
+                                      height: 200.0,
+                                      decoration: new BoxDecoration(
+                                        color: const Color(0xff7c94b6),
+                                        image: new DecorationImage(
+                                          image: FileImage(imageFile),
+                                          fit: BoxFit.cover,
+                                        ),
+                                        borderRadius: new BorderRadius.all(
+                                            new Radius.circular(15.0)),
+                                        border: new Border.all(
+                                          color: Colors.blue,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                    ),
                               Positioned(
                                 right: 1,
                                 bottom: 1,
@@ -148,7 +279,9 @@ class _UpdateProductState extends State<UpdateProduct> {
                                     padding: EdgeInsets.zero,
                                     icon: Icon(Icons.edit),
                                     color: Colors.white,
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      _showChoiceDialog(context);
+                                    },
                                   ),
                                 ),
                               ),
@@ -383,6 +516,8 @@ class _UpdateProductState extends State<UpdateProduct> {
       });
       DateTime now = DateTime.now();
       String updateDateNow = DateFormat('yyyy-MM-dd').format(now);
+              List<int> imageBytes = imageFile.readAsBytesSync();
+    String base64Image = base64.encode(imageBytes);
       var jsons = {
         "idx": widget.idx,
         "name": productNameText.text,
@@ -394,7 +529,7 @@ class _UpdateProductState extends State<UpdateProduct> {
         "create_date": widget.createDate,
         "update_by": widget.username,
         "update_date": updateDateNow,
-        "imagebinary": "",
+        "imagebinary": base64Image,
         "filename": "",
         "filetype": "",
       };

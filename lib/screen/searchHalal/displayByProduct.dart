@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:ocr_barcode_flutter/screen/complaint/complaint_screen.dart';
 import 'package:ocr_barcode_flutter/screen/home/models/searchByProduct.dart';
@@ -58,6 +61,7 @@ class _DisplayByProductState extends State<DisplayByProduct> {
                     ),
                     Column(
                       children: listProduct.map((item) {
+                         Uint8List bytes = base64.decode(item.imagebinary);
                         return Column(
                           children: [
                             InkWell(
@@ -71,7 +75,7 @@ class _DisplayByProductState extends State<DisplayByProduct> {
                                       brandName: item.brandName,
                                       refNumber: item.noRef,
                                       companyName: item.companyName,
-                                      imageProduct: item.filename,
+                                      imageProduct: bytes,
                                     ),
                                   ),
                                 );
@@ -107,12 +111,11 @@ class _DisplayByProductState extends State<DisplayByProduct> {
                                       height: 120,
                                       decoration: new BoxDecoration(
                                         image: new DecorationImage(
-                                          image: item.filename != ""
-                                              ? NetworkImage(
-                                                  'https://hayyshop.xyz/image/' +
-                                                      item.filename)
-                                              : AssetImage(
-                                                  'assets/images/noImage.jpeg'),
+                                          image: item.imagebinary != ""
+                                                          ? MemoryImage(
+                                                              bytes)
+                                                          : AssetImage(
+                                                              'assets/images/noImage.jpeg'),
                                           fit: BoxFit.cover,
                                         ),
                                         borderRadius: new BorderRadius.all(

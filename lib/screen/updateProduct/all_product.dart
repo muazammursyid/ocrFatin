@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:ocr_barcode_flutter/screen/addProduct/model/listAllCompany.dart';
 import 'package:ocr_barcode_flutter/screen/home/api/homeApi.dart';
@@ -127,6 +130,7 @@ class _AllProductState extends State<AllProduct> {
                           isFromSearch
                               ? Column(
                                   children: listSearch.map((item) {
+                                         Uint8List bytes = base64.decode(item.imagebinary);
                                     return InkWell(
                                       onTap: () {
                                         setState(() {
@@ -148,7 +152,7 @@ class _AllProductState extends State<AllProduct> {
                                               updateBy: item.updateBy,
                                               idx: item.idx,
                                               username: widget.username,
-                                              imageProduct: item.filename,
+                                              imageProduct: bytes, 
                                             ),
                                           ),
                                         ).then((value) => refreshApi());
@@ -191,10 +195,9 @@ class _AllProductState extends State<AllProduct> {
                                                   height: 120,
                                                   decoration: new BoxDecoration(
                                                     image: new DecorationImage(
-                                                      image: item.filename != ""
-                                                          ? NetworkImage(
-                                                              'https://hayyshop.xyz/image/' +
-                                                                  item.filename)
+                                                      image: item.imagebinary != ""
+                                                          ? MemoryImage(
+                                                             bytes)
                                                           : AssetImage(
                                                               'assets/images/noImage.jpeg'),
                                                       fit: BoxFit.cover,
@@ -299,10 +302,11 @@ class _AllProductState extends State<AllProduct> {
                                 )
                               : Column(
                                   children: listProduct.map((item) {
+                                     Uint8List bytes = base64.decode(item.imagebinary);
                                     return InkWell(
                                       onTap: () {
                                         Navigator.push(
-                                          context,
+                                          context, 
                                           MaterialPageRoute(
                                             builder: (context) => UpdateProduct(
                                               productNAme: item.name,
@@ -317,7 +321,7 @@ class _AllProductState extends State<AllProduct> {
                                               updateBy: item.updateBy,
                                               idx: item.idx,
                                               username: widget.username,
-                                              imageProduct: item.filename,
+                                              imageProduct: bytes,
                                             ),
                                           ),
                                         ).then((value) => refreshApi());
@@ -360,10 +364,9 @@ class _AllProductState extends State<AllProduct> {
                                                   height: 120,
                                                   decoration: new BoxDecoration(
                                                     image: new DecorationImage(
-                                                      image: item.filename != ""
-                                                          ? NetworkImage(
-                                                              'https://hayyshop.xyz/image/' +
-                                                                  item.filename)
+                                                      image: item.imagebinary != ""
+                                                          ? MemoryImage(
+                                                              bytes)
                                                           : AssetImage(
                                                               'assets/images/noImage.jpeg'),
                                                       fit: BoxFit.cover,

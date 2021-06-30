@@ -215,6 +215,7 @@ class _DetailScreenState extends State<DetailScreen> {
                             padding: const EdgeInsets.only(
                                 left: 10, right: 10, top: 0, bottom: 0),
                             child: TextField(
+                              readOnly: true,
                               controller: comment,
                               maxLines: null,
                               onChanged: (String txt) {},
